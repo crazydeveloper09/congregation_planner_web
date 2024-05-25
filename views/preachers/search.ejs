@@ -1,0 +1,58 @@
+<%- include("../partials/header") %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="text-center">Wyniki wyszukiwania głosicieli w zborze <%= currentUser.username %> dla parametru <%= param %>: <%= preachers.length %></h1>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+                <div class="col-lg-12">
+                    <form action="/preachers/search" method="get">
+                            <div class="input-group mb-3">
+                                    <input type="search" class="form-control" name="search" value="<%= param %>" placeholder="Wyszukaj głosiciela" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                   
+                                      <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+                                    
+                                  </div>
+                    </form>
+                </div>
+            </div>
+        <br>
+        <% if(preachers.length === 0){ %>
+            <div class="row justify-content-center">
+                    <div class="col-lg-8 col-md-12">
+                        <div class="alert alert-info text-center" role="alert">
+                            Nie znalizono głosicieli w zborze <%= currentUser.username %> dla parametru <%= param %>
+                        </div>
+                    </div>
+                </div>
+            
+        <% } else { %>
+            <div class="row">
+                <% preachers.forEach((preacher) => { %>
+                    <div class="col-lg-12">
+                        <div class="preacher__info">
+                            <div class="info">
+                                <p><%= preacher.name %></p>
+                                <a href="/territories/search?preacher=<%= preacher._id %>" class="preacher__link">Zobacz tereny głosiciela</a>
+                            </div>
+                            <div class="preachers-buttons">
+                                <a href="/preachers/<%= preacher._id %>/edit">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <a href="/preachers/<%= preacher._id %>/delete">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+               
+            </div>
+        <% } %>
+       
+    </div>
+
+<%- include("../partials/footer") %>

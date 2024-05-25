@@ -1,0 +1,186 @@
+<%- include("../partials/header") %>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12" style="display: flex; justify-content: space-between; align-items: center;">
+                <h1 class="text-center"><%= congregation.username %></h1>
+                <a href="/congregations/<%= congregation._id %>/activities" style="color: #28a745;" class="congregation__icon">
+                    <i class="fas fa-shield-halved"></i>
+                </a>
+                
+                
+            </div>
+            <% if(success.length > 0){ %>
+                <div class="alert alert-success" role="alert">
+                    <%= success %>
+                </div>
+            <% } %>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h2 class="section__title">Ogólne informacje</h2>
+            <a href="/congregations/<%=congregation._id %>/edit" style="color: black" class="congregation__icon">
+                <i class="fas fa-pen"></i>
+            </a>
+        </div>
+            <div class="row info" style="padding: 0 15px;">
+            
+                    <div class="col-lg-12 congregation__info">
+                        <p>Email sługi terenu</p>
+                        <p class="text-lg-end text-sm-center"><strong><%= congregation.territoryServantEmail %></strong></p>
+
+                    </div>
+                    <div class="col-lg-12 congregation__info">
+                        <p>Email nadzorcy służby</p>
+                        <p class="text-lg-end text-sm-center"><strong><%= congregation.ministryOverseerEmail %></strong></p>
+                    </div>
+                    
+                        <div class="col-lg-12 congregation__info">
+                            <p>Główne miasto zboru</p>
+                            <p class="text-lg-end text-sm-center"><strong><%= congregation.mainCity %></strong></p>
+                        </div>
+                        
+                        
+
+                    
+
+
+                    <br>
+                    <br>
+                    <br>
+                    
+            </div>
+            
+            <div class="row">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2 class="section__title">Grupy służby</h2>
+                    <a href="/congregations/<%=congregation._id %>/ministryGroups/new" style="color: black" class="congregation__icon">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                </div>
+                
+                <% if(ministryGroups?.length === 0){ %>
+
+                <% } else { %>
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <% ministryGroups.forEach((group) => { %>
+                                            <th>
+                                                <%= group.name %>
+                                                <a href="/congregations/<%=congregation._id %>/ministryGroups/<%= group._id %>/edit"><i class="fas fa-pen"></i></a>
+                                                <a href="/congregations/<%=congregation._id %>/ministryGroups/<%= group._id %>/delete"><i class="fas fa-trash"></i></a>
+                                            </th>
+                                        <% }) %>
+                                    </tr>
+                                    
+                                </thead>
+                                <tbody>
+                                    <% const maxItems = Math.max(...ministryGroups.map(group => group.preachers.length)); %> 
+                                    <% for(let i=0; i< maxItems; i++) { %>
+                                        <tr class="text-center">
+                                           <% ministryGroups.forEach((group, j) => { %>
+                                                <% if(ministryGroups[j]?.preachers[i]?.name === group.overseer.name){ %>
+                                                    <td><strong><%= ministryGroups[j]?.preachers[i]?.name %></strong></td>
+                                                <% } else { %>
+                                                    <td><%= ministryGroups[j]?.preachers[i]?.name %></td>
+                                                <% } %>
+                                              
+                                           <% }) %>
+                                           
+                                        </tr>
+                                        
+                                     <% } %>
+                                </tbody>
+                    
+                            </table>
+                        </div>
+                    </div>
+                <% } %>
+                <a href="/congregations/<%=congregation._id %>/ministryGroups/generate-pdf" class="btn btn-primary">Generuj grupy do druku</a>
+            </div>
+            <h2 class="section__title">Statystyki terenowe</h2>
+            <p id="chartLabels" class="d-none"><%= territories.sort((a, b) => a.number - b.number).map((territory) => 'Teren nr ' + territory.number + ' - ' + territory.kind) %></p>
+            <p id="chartValues" class="d-none"><%= territories.sort((a, b) => a.number - b.number).map((territory) => territory.history.length) %></p>
+            <div style="overflow-x: scroll">
+                <div class="chart__container">
+                  <canvas id="myChart"></canvas>
+                </div>
+              </div>
+            <h2 class="section__title">Mapka</h2>
+            <% if (congregation.mainCity) { %>
+                <p id="lat" style="display: none;"><%= congregation.mainCityLatitude %></p>
+                <p id="lng" style="display: none;"><%= congregation.mainCityLongitude %></p>
+                <div id="map" style="width: 100%; height: 400px; margin: 30px 0; padding-bottom: 20px; "></div>
+            <% } else { %>
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <div class="alert alert-info text-center info" role="alert">
+                            <strong>
+                                Edytuj informacje zborowe i uzupełnij pole <em>Główne miasto zboru</em>, żeby zobaczyć niespodziankę. 
+                            </strong>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+    </div>
+
+    <script>
+        function initMap() {
+          var lat = parseFloat(document.getElementById("lat").innerText);
+          var lng = parseFloat(document.getElementById("lng").innerText);
+          var center = {lat: lat, lng: lng };
+          var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 16,
+              center: center,
+              scrollwheel: false
+          });
+          var contactString = `
+            <strong>Główne miasto zboru <%= congregation.username %></strong>
+          `
+          var infowindow = new google.maps.InfoWindow({
+            contact: contactString
+          });
+          var marker = new google.maps.Marker({
+              position: center,
+              map: map
+          });
+          marker.addListener('click', function() {
+            infowindow.open(map, marker);
+          });
+        }
+      </script>
+      <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDKvmIASZjDfZNXZZn2fa4pGvR6T3cQTcA&callback=initMap"></script>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  const ctx = document.getElementById('myChart');
+  const chartLabels = document.getElementById('chartLabels').innerText.split(',');
+  const chartValues = document.getElementById('chartValues').innerText.split(',');
+  console.log(chartLabels)
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: chartLabels,
+      datasets: [{
+        label: 'Ilość opracowania terenu od września 2022',
+        data: chartValues,
+        borderWidth: 8,
+        color: '#28a745'
+      }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+
+<%- include("../partials/footer") %>

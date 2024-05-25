@@ -1,0 +1,85 @@
+<%- include("../partials/headera") %>
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-12" id="form">
+            <div class="text-center">
+                <img src="/logo_tm_website.png" alt="logo">
+            </div>
+            <div id="form1">
+                <div class="text-center">
+                    <a href="/congregation/<%= currentUser._id %>">
+                        <i class="fas fa-arrow-left"></i>
+                        Wróć do strony z informacjami zborowymi
+                    </a>
+                </div>
+                <h1 class="login">Dodaj grupę służby do zboru <%= currentUser.username %></h1>
+                <% if(error.length > 0){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success.length > 0){ %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success %>
+                    </div>
+                <% } %>
+                    
+                    <form action="/congregations/<%= currentUser._id %>/ministryGroups" method="POST" id="form4">
+                       
+                        <div class="form-floating mb-3">
+                       
+                            <input type="text" name="name" id="name" placeholder="Nazwa grupy" class="form-control">
+                            <label for="name" class="username">
+                                Wpisz nazwę grupy
+                                
+                            </label>
+                            
+                        </div>
+                        <div class="mb-3">
+                            <label for="preachers" class="username">
+                                Wybierz głosicieli
+                                
+                            </label>
+                            <select id="preachers" multiple="multiple" name="preachers">
+
+                                <% for(let i=0; i<preachers.length;i++){ %>
+                                    <option value="<%= preachers[i]._id %>"><%= preachers[i].name %></option>
+                                <% } %>
+                            </select>
+                            
+                            
+                        </div>
+                        <div class="form-floating mb-3">
+                       
+                            <select name="overseer" id="overseer" class="form-control">
+                                <option value="">Wybierz nadzorcę</option>
+
+                                <% for(let i=0; i<preachers.length;i++){ %>
+                                    <option value="<%= preachers[i]._id %>"><%= preachers[i].name %></option>
+                                <% } %>
+                            </select>
+                            <label for="overseer" class="username">
+                                Wybierz nadzorcę służby
+                                
+                            </label>
+                            
+                        </div>
+                        <input type="submit" value="Dodaj grupę służby" class="btn btn-success button btn-green" id="send">
+                    </form>
+                </div>
+                            
+            </div>
+            
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#preachers').multiselect();
+            });
+        </script>
+<script>
+    document.getElementById("form4").addEventListener("submit", function(){
+        document.getElementById("send").setAttribute("disabled", "disabled");
+        document.getElementById("send").innerText = `Dodawanie...`;
+    })
+</script>    
+</body>
+</html>

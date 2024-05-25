@@ -1,0 +1,68 @@
+<%- include ("partials/headera") %> 
+
+    <div class="row justify-content-center align-items-center">
+        <div class="col-lg-6 col-md-12" id="form">
+            <div id="form1">
+                <div class="text-center">
+                    <img src="/logo_cong_website.png" alt="logo">
+                </div>
+                
+                <h1 class="login">Zaloguj się do panelu</h1>
+                <h2>
+                  Na razie do logowania służy tylko aplikacja mobilna. Za utrudnienia, przepraszamy.
+              </h2>
+                <% if(error.length > 0){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success.length > 0){ %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success %>
+                    </div>
+                <% } %>
+                    
+                        <form id="form4">
+                            <div class="form-floating mb-3">
+                       
+                                        <input type="text" class="form-control" autocomplete="off" name="username" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
+                                        <label for="username" class="username">
+                                            Nazwa zboru
+                                            
+                                        </label>
+                                        
+                                    </div>
+                                    
+                                    
+                                    <div class="form-floating mb-3">
+                       
+                                        <input type="password" class="form-control" autocomplete="off" name="password" id="password" placeholder="1234" aria-label="Hasło" aria-describedby="basic-addon1">
+                                        <label for="password" class="username">
+                                            Hasło
+                                            
+                                        </label>
+                                        
+                                    </div>
+                                    <input type="submit" value="Zaloguj się" class="btn btn-success button btn-green" id="send">
+
+                        </form>
+                    </div>
+                            
+                </div>
+                
+            </div>
+
+
+
+<script src="/script.js"></script>
+<script>
+
+    document.getElementById("form4").addEventListener("submit", function(){
+        document.getElementById("send").setAttribute("disabled", "disabled");
+        document.getElementById("send").innerText = `Logowanie...`;
+    })
+
+    
+</script>    
+</body>
+</html>

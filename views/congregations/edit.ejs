@@ -1,0 +1,89 @@
+<%- include ("../partials/headera") %> 
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6 col-md-12" id="form">
+                            <div class="text-center">
+                                <img src="/logo_tm_website.png" alt="logo">
+                            </div>
+                            <div id="form1">
+                                <div class="text-center">
+                                    <a href="/congregations/<%= congregation?._id %>">
+                                        <i class="fas fa-arrow-left"></i>
+                                        Wróć do strony z informacjami zborowymi
+                                    </a>
+                                </div>
+                                
+                                <h1 class="login">Edytuj informacje o zborze <%= congregation?.username %></h1>
+                                <% if(error.length > 0){ %>
+                                    <div class="alert alert-danger" role="alert">
+                                        <%= error %>
+                                    </div>
+                                <% } %>
+                                <% if(success.length > 0){ %>
+                                    <div class="alert alert-success" role="alert">
+                                        <%= success %>
+                                    </div>
+                                <% } %>
+                                <form action="/congregations/<%= congregation?._id %>?_method=PUT" method="post" id="form4">
+                                    
+                                        <div class="form-floating mb-3">
+                       
+                                            <input type="text" class="form-control" autocomplete="off" value="<%= congregation?.username %>" name="congregation[username]" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
+                                            <label for="username" class="username">
+                                                Nazwa zboru
+                                                
+                                            </label>
+                                            
+                                        </div>
+                                        <div class="form-floating mb-3">
+                       
+                                            <input type="email" class="form-control" autocomplete="off" value="<%= congregation?.territoryServantEmail %>" name="congregation[territoryServantEmail]" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
+                                            <label for="username" class="username">
+                                                Email sługi terenu
+                                                
+                                            </label>
+                                            
+                                        </div>
+                                        
+                                        <div class="form-floating mb-3">
+                       
+                                            <input type="email" class="form-control" autocomplete="off" value="<%= congregation?.ministryOverseerEmail %>" name="congregation[ministryOverseerEmail]" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
+                                            <label for="username" class="username">
+                                                Email nadzorcy służby
+                                                
+                                            </label>
+                                            
+                                        </div>
+
+                                        <div class="form-floating mb-3" id="mainCityDiv">
+                       
+                                            <input type="text" name="congregation[mainCity]" id="mainCity" autocomplete="off" value="<%= congregation.mainCity %>" placeholder="mainCity" class="form-control" required>
+                                            <label for="mainCity" class="username" id="mainCityLabel">
+                                               Główne miasto zboru np. Głogów, Polska
+                                                
+                                            </label>
+                                            
+                                        </div>
+                                    
+                                    <input type="submit" value="Edytuj zbór" class="btn btn-success button btn-green" id="send">
+                            
+                                </form>
+                                
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+             
+            
+        
+		<script src="/script.js"></script>
+        <script>
+            document.getElementById("form4").addEventListener("submit", function(){
+                document.getElementById("send").setAttribute("disabled", "disabled");
+                document.getElementById("send").innerText = `Rejestrowanie...`;
+            })
+        </script>    
+    </body>
+</html>
+

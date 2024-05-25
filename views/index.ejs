@@ -1,0 +1,126 @@
+<%- include("partials/header") %> 
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="text-center">
+                    Wolne tereny zboru <%= currentUser.username %>: <%= territories.length %>
+                </h1>
+            </div>
+        </div>
+        <%- include("partials/freeSearch") %>
+
+        <% if (currentUser.mainCity) { %>
+            <div class="d-none" id="mainCityLatitude"><%= currentUser.mainCityLatitude %></div>
+            <div class="d-none" id="mainCityLongitude"><%= currentUser.mainCityLongitude %></div>
+            <div id="map" style="width: 100%; height: 400px; margin: 30px 0 "></div>
+        <% } else { %>
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="alert alert-info text-center info" role="alert">
+                        <strong>
+                            Wejdź w zakładkę <em>Zbór</em> i uzupełnij pole <em>Główne miasto zboru</em>, żeby zobaczyć niespodziankę. 
+                            Żeby odnieść z niej jak najwięcej korzyści zalecamy uzupełnić pole <em>Pełna lokalizacja</em> we wszystkich wolnych terenach.
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+        
+        <% if(territories.length===0){ %>
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-12">
+                    <div class="alert alert-info text-center" role="alert">
+                        Nie ma na razie wolnych terenów
+                    </div>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="row" style="padding-bottom: 80px;">
+                <% result.docs.forEach((territory) => { %>
+                    <%- include("partials/territory", {territory: territory, type: 'available'}) %>
+                <% }) %>
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <% for( let index = 1; index <= result.totalPages; index++ ) { %>
+                            <% if (index === result.page) { %>
+                                <li class="page-item active">
+                                    <a href="/territories/available?page=<%= index %>" class="page-link"><%= index %></a>
+                                </li>
+                                
+                            <% } else { %>
+                                <li class="page-item">
+                                    <a href="/territories/available?page=<%= index %>" class="page-link"><%= index %></a>
+                                </li>
+                               
+                            <% } %>
+                        <% } %>
+                    
+                    </ul>
+                </nav>
+            </div>
+        <% } %>
+        <div class="d-none" id="territories">
+            <%- territories %>
+        </div>
+        <script src="/manageFreeSearch.js"></script>
+        <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+            ({key: "AIzaSyDKvmIASZjDfZNXZZn2fa4pGvR6T3cQTcA", v: "weekly"});</script>
+        <script src="/markerClustererCompiled.min.js"></script>
+        <script>
+            const locations = <%-JSON.stringify(territories)%>;
+            const countDays = <%-countDaysFromNow%>
+
+            console.log(countDays)
+
+            async function initMap() {
+                const { Map, InfoWindow } = await google.maps.importLibrary("maps");
+                const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");
+                const mainCityLatitude = document.getElementById('mainCityLatitude').innerText;
+                const mainCityLongitude = document.getElementById('mainCityLongitude').innerText;
+            
+                const map = new google.maps.Map(
+                    document.getElementById("map"),
+                    {
+                        zoom: 13,
+                        center: { lat: parseFloat(mainCityLatitude), lng: parseFloat(mainCityLongitude) },
+                        mapId: 'DEMO_MAP_ID',
+                    }
+                );
+            
+                const infoWindow = new google.maps.InfoWindow({
+                    content: "",
+                    disableAutoPan: true,
+                });
+            
+                const markers = [];
+
+                locations.forEach((territory) => {
+                    if(territory.location){
+                        const position = {
+                            lat: parseFloat(territory.latitude),
+                            lng: parseFloat(territory.longitude),
+                        }
+                        const pinGlyph = new google.maps.marker.PinElement({
+                            glyph: territory.number.toString(),
+                            glyphColor: "white",
+                        })
+                        const marker = new google.maps.marker.AdvancedMarkerElement({
+                            position,
+                            content: pinGlyph.element,
+                        });
+                    
+                        marker.addListener("click", () => {
+                            infoWindow.setContent(`${territory.location} <br>Rodzaj: <strong>${territory.kind}</strong> <br> <strong>Teren nieopracowany od ${countDays(territory.lastWorked)} dni</strong>`);
+                            infoWindow.open(map, marker);
+                        });
+                        markers.push(marker)
+                    }
+                })
+                
+                new markerClusterer.MarkerClusterer({ markers, map });
+            }
+            
+            initMap();
+        </script>
+
+<%- include("partials/footer") %>

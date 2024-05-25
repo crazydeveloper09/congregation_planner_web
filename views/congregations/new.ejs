@@ -1,0 +1,116 @@
+<%- include ("../partials/headera") %> 
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6 col-md-12" id="form">
+                            <div class="text-center">
+                                <img src="/logo_cong_website.png" alt="logo">
+                            </div>
+                            <div id="form1">
+                                <div class="text-center">
+                                    <a href="/territories/available">
+                                        <i class="fas fa-arrow-left"></i>
+                                        Wróć do strony głównej
+                                    </a>
+                                </div>
+                                
+                                <h1 class="login">Rejestracja zboru</h1>
+                                <% if(error.length > 0){ %>
+                                    <div class="alert alert-danger" role="alert">
+                                        <%= error %>
+                                    </div>
+                                <% } %>
+                                <% if(success.length > 0){ %>
+                                    <div class="alert alert-success" role="alert">
+                                        <%= success %>
+                                    </div>
+                                <% } %>
+                                <form action="/congregations" method="post" id="form4">
+                                    
+                                        <div class="form-floating mb-3">
+                       
+                                            <input type="text" class="form-control" autocomplete="off" value="<%= congregation?.username %>" name="username" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
+                                            <label for="username" class="username">
+                                                Nazwa zboru
+                                                
+                                            </label>
+                                            
+                                        </div>
+                                        <div class="form-floating mb-3">
+                       
+                                            <input type="email" class="form-control" autocomplete="off" value="<%= congregation?.territoryServantEmail %>" name="territoryServantEmail" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
+                                            <label for="username" class="username">
+                                                Email admina
+                                                
+                                            </label>
+                                            
+                                        </div>
+                                        
+                                        <div class="form-floating mb-3">
+                       
+                                            <input type="email" class="form-control" autocomplete="off" value="<%= congregation?.ministryOverseerEmail %>" name="ministryOverseerEmail" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
+                                            <label for="username" class="username">
+                                                Email drugiego admina
+                                                
+                                            </label>
+                                            
+                                        </div>
+                                        
+                                        <div class="form-floating mb-3" id="mainCityDiv">
+                       
+                                            <input type="text" name="mainCity" id="mainCity" autocomplete="off" placeholder="mainCity" class="form-control" required>
+                                            <label for="mainCity" class="username" id="mainCityLabel">
+                                               Główne miasto zboru np. Głogów, Polska 
+                                                
+                                            </label>
+                                            
+                                        </div>
+                                        
+                                        <div class="form-floating mb-3">
+                           
+                                            <input type="password" class="form-control" autocomplete="off" value="<%= congregation?.password %>" name="password" id="password" placeholder="1234" aria-label="Hasło" aria-describedby="basic-addon1">
+                                            <label for="password" class="username">
+                                                Hasło
+                                                
+                                            </label>
+                                            
+                                        </div>
+                                        <div class="form-floating mb-3">
+                           
+                                            <input type="password" class="form-control" autocomplete="off" value="<%= congregation?.confirm %>" name="confirm" id="confirm" placeholder="1234" aria-label="Hasło" aria-describedby="basic-addon1">
+                                            <label for="confirm" class="username">
+                                                Powtórz hasło
+                                                
+                                            </label>
+                                            
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
+                                            <label class="form-check-label" for="exampleCheck1">
+                                                Przeczytałem i zapoznałem się z
+                                                <a href="/policy">polityką prywatności</a>
+                                               
+                                            </label>
+                                        </div>
+                                    
+                                    <input type="submit" value="Zarejestruj zbór" class="btn btn-success button btn-green" id="send">
+                                   
+                                </form>
+                                
+                                
+                            </div>
+                            
+                        </div>
+                        
+                    </div>
+               
+            
+        
+		<script src="/script.js"></script>
+        <script>
+            document.getElementById("form4").addEventListener("submit", function(){
+                document.getElementById("send").setAttribute("disabled", "disabled");
+                document.getElementById("send").innerText = `Rejestrowanie...`;
+            })
+        </script>    
+    </body>
+</html>
+

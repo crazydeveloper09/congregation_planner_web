@@ -1,0 +1,165 @@
+<%- include("../partials/headera") %>
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-12" id="form">
+            <div class="text-center">
+                <img src="/logo_tm_website.png" alt="logo">
+            </div>
+            <div id="form1">
+                <div class="text-center">
+                    <a href="/territories/available">
+                        <i class="fas fa-arrow-left"></i>
+                        Wróć do strony z wolnymi terenami
+                    </a>
+                </div>
+                <h1 class="login">Edytuj teren nr <%= territory.number %> zboru <%= currentUser.username %></h1>
+                <% if(error.length > 0){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success.length > 0){ %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success %>
+                    </div>
+                <% } %>
+                    
+                        <form action="/territories/<%= territory._id %>?_method=PUT" method="post" id="form4">
+                            
+                            
+                            <div class="form-floating mb-3">
+                       
+                                <input type="number" name="territory[number]" id="number" value="<%= territory.number %>" placeholder="Wpisz nr terenu" class="form-control">
+                                <label for="number" class="username">
+                                    Edytuj nr terenu
+                                    
+                                </label>
+                                
+                            </div>
+
+                            <div class="form-floating mb-3">
+                       
+                                <select name="territory[kind]" id="kind" class="form-control">
+                                    <option value="<%= territory.kind %>"><%= territory.kind %></option>
+                                    <option value="city">Teren miejski</option>
+                                    <option value="village">Teren wiejski</option>
+                                    <option value="market">Teren handlowy</option>
+                                    
+                                </select>
+                                <label for="preacher" class="username">
+                                    Edytuj rodzaj terenu
+                                    
+                                </label>
+                                
+                            </div>
+                           
+                            <div class="form-floating mb-3">
+                       
+                                <input type="text" name="territory[city]" id="city" value="<%= territory.city %>" placeholder="Miejscowość" class="form-control">
+                                <label for="city" class="username" id="cityLabel">
+                                    Edytuj miejscowość
+                                    
+                                </label>
+                                
+                            </div>
+                          
+                            <div class="form-floating mb-3" id="streetDiv">
+                       
+                                <input type="text" name="territory[street]" id="street" value="<%= territory.street %>" placeholder="Ulica" class="form-control">
+                                <label for="street" class="username" id="streetLabel">
+                                    Edytuj ulicę
+                                    
+                                </label>
+                                
+                            </div>
+                            
+                            
+                            <div class="form-floating mb-3" id="beginNumberDiv">
+                       
+                                <input type="number" name="territory[beginNumber]" id="beginNumber" value="<%= territory.beginNumber %>" placeholder="Numer początkowy" class="form-control">
+                                <label for="beginNumber" class="username">
+                                    Edytuj numer początkowy
+                                    
+                                </label>
+                                
+                            </div>
+                            
+                          
+                            <div class="form-floating mb-3" id="endNumberDiv">
+                       
+                                <input type="number" name="territory[endNumber]" id="endNumber" value="<%= territory.endNumber %>" placeholder="Numer końcowy" class="form-control">
+                                <label for="endNumber" class="username">
+                                    Edytuj numer końcowy
+                                    
+                                </label>
+                                
+                            </div>
+                            <div class="form-floating mb-3" id="locationDiv">
+                       
+                                <input type="text" name="territory[location]" id="location" autocomplete="off" value="<%= territory.location %>" placeholder="location" class="form-control" required>
+                                <label for="location" class="username" id="locationLabel">
+                                   Pełna lokalizacja np. Mechaniczna 30, Głogów
+                                    
+                                </label>
+                                
+                            </div>
+                           
+                            
+                            
+                          
+                            <div class="form-floating mb-3">
+                       
+                                <textarea name="territory[description]" id="description" placeholder="Opis terenu" class="form-control"><%= territory.description.trim() %></textarea>
+                                <label for="description" class="username">
+                                    Edytuj opis terenu
+                                    
+                                </label>
+                                
+                            </div>
+                         
+                            <label class="username">
+                                Czy jest fizyczna karta terenu?
+                                
+                            </label>
+                            <div class="d-none" id="physicalCard">
+                                <%= territory.isPhysicalCard %>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="territory[isPhysicalCard]" value="true" id="physicalCardYes">
+                                <label class="form-check-label">
+                                  Tak
+                                </label>
+                              </div>
+                              <div class="form-check">
+                                <input class="form-check-input" type="radio" name="territory[isPhysicalCard]" value="false" id="physicalCardNo">
+                                <label class="form-check-label">
+                                  Nie
+                                </label>
+                              </div>
+                            <input type="submit" value="Edytuj teren" class="btn btn-success button btn-green" id="send">
+                        </form>
+                    </div>
+                            
+                </div>
+                
+            </div>
+
+      
+        <script src="/manageKindOfTerritories.js"></script>
+    <script>
+      
+
+    document.getElementById("form4").addEventListener("submit", function(){
+        document.getElementById("send").setAttribute("disabled", "disabled");
+        document.getElementById("send").innerText = `Edytowanie...`;
+    })
+
+
+    if(document.getElementById("physicalCard").innerText.trim() === 'true'){
+        document.getElementById("physicalCardYes").checked = true;
+    } else {
+        document.getElementById("physicalCardNo").checked = true;
+    }
+
+    </script>    
+</body>
+</html>

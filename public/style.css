@@ -1,0 +1,354 @@
+
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: #ece9e9;
+}
+
+.my_nav {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding: 10px 64px;
+    background: white;
+}
+
+.my_nav ul {
+    list-style-type: none;
+    margin: 0 auto;
+}
+
+.my_nav-item {
+    display: inline-block;
+    text-align: center;
+}
+
+.my_nav-item:not(:last-child) {
+    margin-right: 20px;
+}
+.my_nav-link {
+    font-weight: 400;
+    font-size: 20px;
+    color: #B3A8A8;
+    text-align: center;
+    text-decoration: none;
+}
+
+.my_nav-link.my_active {
+    color: #28a745;
+}
+
+.navbar-brand {
+    font-family: 'Poppins', sans-serif;
+    font-size: 25px;
+}
+
+.preachers-buttons {
+    margin-bottom: 10px;
+}
+
+.limitChoose span a {
+    text-decoration: none;
+}
+
+.limitChoose span a {
+    text-decoration: none;
+}
+
+.page-link {
+    color: #28a745;
+}
+
+.page-item.active .page-link{
+    background: #28a745;
+    border-color: #28a745;
+    font-weight: 700;
+}
+.card {
+    margin-bottom: 90px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.card.city {
+    background: #f6edd9;
+}
+
+.card.village {
+    background: #e1f1ff;
+}
+
+.card.market {
+    background: white;
+}
+
+.card.noPhysical {
+    border: 3px solid #9999CC;
+}
+
+.section__title {
+    color: #000;
+    margin: 15px 0;
+    font-weight: 500;
+}
+
+.territory-section {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 15px 0;
+}
+h1 {
+    color: #28a745;
+    font-size: 35px;
+    font-weight: 700;
+    margin-top: 20px;
+}
+
+h4 {
+    color: #28a745;
+    font-size: 22px;
+    font-weight: 400;
+}
+th a {
+    color: #fff;
+    margin-left: 10px;
+}
+thead,
+.ministryGroup__title {
+    background: #9999CC;
+    color: #fff;
+    border-color: #fff;
+    padding: 5px;
+    text-align: center;
+    border-left: 1px solid white;
+    margin-bottom: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.ministryGroups {
+    display: flex;
+    margin-top: 20px;
+}
+
+.ministryGroup__item {
+    text-align: center;
+    border-bottom: 1px solid grey;
+    border-left: 1px solid grey;
+    padding: 8px;
+    margin-bottom: 0;
+}
+
+.ministryGroup:last-child {
+    border-right: 1px solid grey;
+}
+
+.ministryGroup__item:nth-of-type(2n) {
+    background: #d6d6d6;
+}
+
+.preachers-buttons a {
+    text-decoration: none;
+    font-size: 20px;
+    color: #9999CC;
+}
+
+.preachers-buttons a:first-child {
+    margin-right: 7px;
+}
+
+.congregation__icon {
+    text-decoration: none;
+    font-size: 25px;
+}
+
+.territory__icon a {
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+}
+
+.territory__icon a:not(:last-child) {
+    margin-right: 7px;
+}
+
+
+
+.btn-golden {
+    background: #f6b26b;
+    border-color: #f6b26b;
+  }
+
+#name {
+    color: black;
+    font-weight: 700;
+    font-size: 22px;
+}
+
+.info {
+    color: black;
+    font-weight: 400;
+    font-size: 19px;
+}
+
+.login {
+    color: #28a745;
+    font-size: 35px;
+}
+
+.details-item {
+    font-family: 'Nunito', sans-serif;
+    font-size: 20px;
+}
+
+.details-item:hover {
+    cursor: pointer;
+    background: #28a745;
+    color: white;
+    padding: 4px 8px;
+}
+
+.territory-navigation {
+    display: flex;
+    justify-content: space-between;
+}
+
+.territory-navigation a {
+    font-size: 19px;
+    text-decoration: none;
+}
+
+
+input[type=search] {
+    
+    color: #28a745;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #28a745;
+}
+
+input[type=search]::placeholder {
+    color: #28a745;
+}
+
+.congregation__info {
+    display: flex;
+    background: #fff;
+    justify-content: space-between;
+    border: 1px solid #9999CC;
+    border-radius: 10px;
+    margin-top: 15px;
+    padding: 15px;
+}
+
+.congregation__info p {
+    margin-bottom: 0;
+}
+
+.chart__container {
+    position: relative;  
+    width: 100%;
+}
+
+.preacher__info {
+    display: flex;
+    background: #fff;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    border: 1px solid #9999CC;
+    border-radius: 10px;
+    margin-top: 15px;
+    padding: 15px;
+}
+
+.preacher__link {
+    font-size: 17px;
+    color: #28a745;
+    text-decoration: none;
+    letter-spacing: 0.1em;
+}
+
+.preacher__info p {
+    margin-bottom: 5px;
+}
+
+.button {
+    width: 100%;
+    margin-bottom: 15px;
+    font-weight: 700;
+    
+  }
+  
+  .btn-golden {
+    background: #f6b26b;
+    border-color: #f6b26b;
+  }
+  
+  .btn-green {
+    background: #28a745;
+    border-color: #28a745;
+  }
+
+  .accordion-item,
+  .accordion-header,
+  .accordion-button {
+    background: transparent;
+    border: none;
+  }
+
+  .accordion-button:focus {
+    box-shadow: none;
+  }
+
+
+@media (max-width: 572px) {
+    body {
+        padding-bottom: 70px;
+    }
+    .my_nav {
+        padding: 10px 5px;
+        margin-top: 10px;
+    }
+
+    nav.my_nav.fixed-bottom ul {
+        padding-left: 0px;
+    }
+
+    .my_nav-item:not(:last-child) {
+        margin-right: 7px;
+    }
+
+    .my_nav-link {
+        font-size: 17px;
+    }
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .congregation__info {
+        display: block;
+        text-align: center;
+    }
+
+    .text-end {
+        text-align: center;
+    }
+
+    .preacher__info {
+        display: block;
+        text-align: center;
+    }
+
+    .preachers-buttons {
+        margin-top: 15px;
+    }
+
+    .chart__container {
+        width: 900px;
+    }
+
+    .info {
+        font-size: 17px;
+    }
+}

@@ -1,0 +1,33 @@
+<%- include("../partials/header") %>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="text-center">Aktywności dotyczące logowania</h1>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Data i czas</th>
+                            <th>Adres IP</th>
+                            <th>Platforma</th>
+                            <th>Informacje o urządzeniu</th>
+                            <th>Typ aplikacji</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% activities.forEach((activity) => { %>
+                            <tr class="text-center">
+                                <td><%= activity.date.toLocaleString() %></td>
+                                <td><%= activity.ipAddress %></td>
+                                <td><%= activity?.platform?.trim() %></td>
+                                <td><%= activity.userAgent %></td>
+                                <td><%= activity.applicationType %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<%- include("../partials/footer") %>

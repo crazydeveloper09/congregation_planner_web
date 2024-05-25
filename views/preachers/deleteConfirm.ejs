@@ -1,0 +1,42 @@
+<%- include("../partials/headera") %>
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-12" id="form">
+            <div class="text-center">
+                <img src="/logo_tm_website.png" alt="logo">
+            </div>
+            <div id="form1">
+                <div class="text-center">
+                    <a href="/preachers" id="back">
+                        <i class="fas fa-arrow-left"></i>
+                        Wróć do spisu głosicieli
+                    </a>
+                </div>
+                <h1 class="login">
+                    Czy na pewno chcesz usunąć głosiciela <%= preacher.name %>?
+                </h1>
+                <% if(error.length > 0){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success.length > 0){ %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success %>
+                    </div>
+                <% } %>
+                <form action="/preachers/<%= preacher._id %>?_method=DELETE" method="post">
+                   
+                    <input required type="submit" value="Tak" class="btn button btn-warning btn-golden">
+                   
+                </form>
+                <a href="/preachers" class="btn button btn-dark btn-green">
+                    Nie
+                </a>
+            </div>
+           
+        </div>
+        
+    </div>
+
+</body>
+</html>

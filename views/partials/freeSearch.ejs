@@ -1,0 +1,78 @@
+<div class="row justify-content-center">
+    <div class="col-lg-12">
+        <div class="text-center">
+            <div class="dropdown">
+                <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    Wybierz kategorię wyszukiwania
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li>
+                        <a class="dropdown-item" id="city">Miejscowość</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" id="street">Ulica</a>     
+                    </li>
+                    <li>
+                        <a class="dropdown-item" id="number">Nr terenu</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" id="kind">Rodzaj terenu</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+            <div id="citySearch">
+                <br>
+                    <form action="/territories/available/search" method="get">
+                        <div class="input-group mb-3">
+                            <input type="search" class="form-control" name="city" value="<%= typeof param !== 'undefined' ? param : ''  %>" placeholder="Wpisz nazwę miejscowości" aria-label="Wpisz nazwę miejscowości" aria-describedby="basic-addon2">
+                            <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+                            
+                        </div>
+                    </form>
+            </div>
+
+            <div id="streetSearch">
+                <br>
+                    <form action="/territories/available/search" method="get">
+                        <div class="input-group mb-3">
+                            <input type="search" class="form-control" name="street" value="<%= typeof param !== 'undefined' ? param : ''  %>" placeholder="Wpisz nazwę ulicy" aria-label="Wpisz nazwę ulicy" aria-describedby="basic-addon2">
+                            
+                            <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+                            
+                        </div>
+                    </form>
+            </div>
+
+            <div id="numberSearch">
+                <br>
+                    <form action="/territories/available/search" method="get">
+                        <div class="input-group mb-3">
+                            <input type="search" class="form-control" name="number" value="<%= typeof param !== 'undefined' ? param : '' %>" placeholder="Wpisz nr terenu" aria-label="Wpisz nr terenu" aria-describedby="basic-addon2">
+                            <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+                        </div>
+                    </form>
+            </div>
+            
+            <div id="kindSearch">
+                <br>
+                    <form action="/territories/available/search" method="get">
+                        <div class="input-group mb-3">
+                            <select name="kind" class="form-select">
+                                <option>
+                                    <%= typeof param !== 'undefined' ? param : '' %>
+                                </option>
+                                <option value="city">Teren miejski</option>
+                                <option value="village">Teren wiejski</option>
+                                <option value="market">Teren handlowy</option>
+                            </select>
+                            <button class="btn btn-success" type="submit"><i class="fas fa-search"></i></button>
+                        </div>
+                    </form>
+            </div>
+        
+    </div>
+    
+</div>
+<br>

@@ -1,0 +1,42 @@
+<%- include("../partials/headera") %>
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-12" id="form">
+            <div class="text-center">
+                <img src="/logo_tm_website.png" alt="logo">
+            </div>
+            <div id="form1">
+                <div class="text-center">
+                    <a href="/congregations/<%= currentUser._id %>" id="back">
+                        <i class="fas fa-arrow-left"></i>
+                        Wróć do informacji zborowych
+                    </a>
+                </div>
+                <h1 class="login">
+                    Czy na pewno chcesz usunąć grupę służby <%= ministryGroup.name %>?
+                </h1>
+                <% if(error.length > 0){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success.length > 0){ %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success %>
+                    </div>
+                <% } %>
+                <form action="/congregations/<%= currentUser._id %>/ministryGroups/<%= ministryGroup._id %>?_method=DELETE" method="post">
+                   
+                    <input required type="submit" value="Tak" class="btn button btn-warning btn-golden">
+                   
+                </form>
+                <a href="/congregations/<%= currentUser._id %>" class="btn button btn-dark btn-green">
+                    Nie
+                </a>
+            </div>
+           
+        </div>
+        
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+
+
+<div class="<%= typeof show !== 'undefined' ? 'col-lg-8 col-sm-12': 'col-lg-4 col-md-6 col-sm-12' %>">
+    <% if (typeof show !== 'undefined') { %>
+        <div class="territory-navigation">
+            <% if((currentIndex - 1) >= 0){ %>
+                <a href="/territories/<%= territories[(currentIndex - 1)]?._id %>"><i class="fa-solid fa-backward"></i> Poprzedni</a>
+            <% } %>
+            
+            <% if((currentIndex + 1) < territories.length){ %>
+                <a href="/territories/<%= territories[(currentIndex + 1)]?._id %>"></i> Następny <i class="fa-solid fa-forward"></i></a>
+            <% } %>
+        </div>
+    <% } %>
+    <div class="card <%= territory.kind %> <%= !territory.isPhysicalCard && 'noPhysical' %>">
+       
+            <div class="card-body">
+                <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3 id="name">Karta terenu nr <%= territory.number %></h3> 
+                    <div class="territory__icon">
+                        <% if (typeof show === 'undefined') { %>
+                            <a href="/territories/<%= territory._id %>">
+                                <i class="fas fa-calendar"></i>
+                            </a>
+                        <% } %>
+                        
+                            <a href="/territories/<%= territory._id %>/edit">
+                                <i class="fas fa-pen"></i>
+                            </a>
+                            <a href="/territories/<%= territory._id %>/delete">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                    </div>
+                </div>
+                <p class="info">Miejscowość: <strong><%= territory.city %></strong></p>
+                <p class="info">Rodzaj: <strong><%= territory.kind %></strong></p>
+                <p class="info">Ulica: 
+                    <strong><%= territory.street %> 
+                        <% if(typeof territory.beginNumber !== 'undefined'){ %>
+                            <%= territory.beginNumber %> 
+                        <% } %>
+                        <% if(territory.endNumber != null){ %>
+                            - <%= territory.endNumber %>
+                        <% } %>
+                    </strong>
+                </p>
+                <% if(typeof territory.description !== 'undefined' && territory.description !== ''){ %>
+                    <p class="info">Opis: <strong><%= territory.description %></strong></p>
+                <% } %>
+                
+            
+                <p class="info">Ostatnio opracowane: <strong><%= new Date(territory.lastWorked).toLocaleDateString() %></strong></p>
+                <% if(territory?.preacher){ %>
+                    <p class="info">Głosiciel: <strong><%= territory.preacher.name %></strong></p>
+                    <p class="info">Pobrany: <strong><%= new Date(territory.taken).toLocaleDateString() %></strong></p>
+                    <p class="info"><strong><%= territory.preacher.name %> ma ten teren
+                        <% if(countDaysFromNow(territory.taken) < 90){ %>
+                            <%= countDaysFromNow(territory.taken) %> dni
+                        <% } else if(countDaysFromNow(territory.taken) < 120){ %>
+                            <span class="text-primary"><%= countDaysFromNow(territory.taken) %></span> dni
+                        <% } else if(countDaysFromNow(territory.taken) >= 120){ %>
+                            <span class="text-danger"><%= countDaysFromNow(territory.taken) %></span> dni
+                            <span class="badge bg-danger position-absolute" style="top: 65px; right: 15px">Do oddania</span>
+
+                        <% } %>
+                    </strong></p>
+                <% } else { %>
+                    <span class="badge bg-success position-absolute" style="top: 65px; right: 15px">Wolny</span>
+                    <p class="info"><strong>Teren nie był opracowywany od 
+                            <% if((countDaysFromNow(territory.lastWorked)) < 31){ %>
+                                <%= countDaysFromNow(territory.lastWorked) %> dni
+                            <% } else if((countDaysFromNow(territory.lastWorked)) <= 62){ %>
+                                <span class="text-primary"><%= countDaysFromNow(territory.lastWorked) %></span> dni
+                            <% } else if((countDaysFromNow(territory.lastWorked)) <= 93){ %>
+                                <span class="text-warning"><%= countDaysFromNow(territory.lastWorked) %></span> dni
+                            <% } else if((countDaysFromNow(territory.lastWorked)) <= 124){ %>
+                                <span class="text-orange" style="color: #fd7e14;"><%= countDaysFromNow(territory.lastWorked) %></span> dni
+                            <% } else if((countDaysFromNow(territory.lastWorked)) >= 124){ %>
+                                <span class="text-danger"><%= countDaysFromNow(territory.lastWorked) %></span> dni
+                                
+                                <span class="badge bg-danger position-absolute" style="top: 95px; right: 15px">Do przydzielenia</span>
+                                
+                            <% } %>
+                    </strong></p>
+                <% } %>
+
+                <% if(!territory.isPhysicalCard){ %>
+                    <p class="info" style="color: #9999CC;">
+                        <strong>
+                            Teren nie posiada fizycznej karty
+                        </strong>
+                    </p>
+                <% } %> 
+
+                <% if (territory.preacher) { %>
+                    <div class="accordion" id="territoryAssignment__<%= territory._id %>">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="headingOne_<%= territory._id %>">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_<%= territory._id %>" aria-expanded="false" aria-controls="collapseOne_<%= territory._id %>">
+                              Zdaj teren
+                            </button>
+                          </h2>
+                          <div id="collapseOne_<%= territory._id %>" class="accordion-collapse collapse" aria-labelledby="headingOne_<%= territory._id %>" data-bs-parent="#territoryAssignment__<%= territory._id %>">
+                            <div class="accordion-body">
+                                <form action="/territories/<%= territory._id %>/makeFree" method="post">
+                                    <div class="form-floating mb-3">
+                       
+                                        <input type="date" name="lastWorked" id="lastWorked" value="<%= territory.lastWorked %>" class="form-control">
+                                        <label for="lastWorked" class="username">
+                                            Ostatnio pracowane
+                                            
+                                        </label>
+                                        
+                                    </div>
+                                    <input type="submit" value="Zdaj teren" class="btn btn-success button btn-green">
+                                </form>
+                            </div>
+                          </div>
+                        </div>
+                        
+                    </div>
+                <% } else { %>
+                    <div class="accordion" id="territoryAssignment__<%= territory._id %>">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="headingOne_<%= territory._id %>">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne_<%= territory._id %>" aria-expanded="false" aria-controls="collapseOne_<%= territory._id %>">
+                              Przydziel teren
+                            </button>
+                          </h2>
+                          <div id="collapseOne_<%= territory._id %>" class="accordion-collapse collapse" aria-labelledby="headingOne_<%= territory._id %>" data-bs-parent="#territoryAssignment__<%= territory._id %>">
+                            <div class="accordion-body">
+                                <form action="/territories/<%= territory._id %>/assign" method="post">
+                                    <div class="form-floating mb-3">
+                       
+                                        <select name="preacher" id="preacher" class="form-control">
+                                            
+                                        
+        
+                                            <% for(let i=0; i<preachers.length;i++){ %>
+                                                <option value="<%= preachers[i]._id %>"><%= preachers[i].name %></option>
+                                            <% } %>
+                                        </select>
+                                        <label for="preacher" class="username">
+                                            Wybierz głosiciela
+                                            
+                                        </label>
+                                        
+                                    </div>
+                                    <input type="submit" value="Przydziel teren" class="btn btn-success button btn-green">
+                                </form>
+                            </div>
+                          </div>
+                        </div>
+                        
+                    </div>
+                    
+                <% } %>
+                
+        
+
+                <% if (typeof show !== 'undefined') { %>
+                    <% if (territory.location) { %>
+                    
+                        <p id="lat" style="display: none;"><%= territory.latitude %></p>
+                        <p id="lng" style="display: none;"><%= territory.longitude %></p>
+                        <div id="map" style="width: 100%; height: 400px; margin-top: 30px"></div>
+                    <% } else { %>
+                        <p class="info" style="margin-top: 30px;">
+                            <strong>Edytuj teren i uzupełnij pole "Pełna lokalizacja", a czeka na Ciebie miła niespodzianka</strong>
+                        </p>
+                    <% } %>
+                <% } %>
+            </div>
+            <% if(typeof show !== 'undefined' && territory.history.length !== 0) { %>
+                <br>
+                <br>
+                <div class="card-footer">
+                    <div class="row">
+                        <h2 class="territory-section">Historia</h2>
+                        <% for(let serviceYear of Object.keys(groupBy(territory.history, 'serviceYear')).reverse()) { %>
+                            <div class="col-lg-12">
+                                <h3 id="name" style="font-size: 23px; margin: 10px 0;">Rok służbowy <%= serviceYear %></h3>
+                                <hr style="border: 1px solid black; background-color: black;">
+                                <% groupBy(territory.history, 'serviceYear')[serviceYear].reverse().forEach((checkout) => { %>
+                                    
+                                    <div>
+                                        <% if(!checkout.takenDate || !checkout.passedBackDate){ %>
+                                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                                <div>
+                                                    <h4 id="name">
+                                                        <%= checkout.date?.toLocaleDateString() %>
+                                                        <span data-bs-toggle="popover" title="Ważna informacja ‼️" data-bs-content="Do poprawnego wyświetlenia tego rekordu edytuj go. Zalecamy robienie tego z papierową kartoteką terenów. Po edycji niepotrzebne rekordy usuń. Podpowiedź: Następny/poprzedni rekord zawiera datę pobrania/opracowania. Wszystko sprawdzaj z kartoteką" style="margin-left: 10px;">
+                                                            <i class="fas fa-circle-info"></i>
+                                                        </span>
+                                                    </h4>
+                                                    
+                                                </div>
+                                                
+                                        
+                                                <div class="territory__icon">
+                                                    <a href="/territories/<%= territory._id %>/checkouts/<%= checkout._id %>/edit">
+                                                        <i class="fas fa-pen"></i>
+                                                    </a>
+                                                    <a href="/territories/<%= territory._id %>/checkouts/<%= checkout._id %>/delete">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        <% } else { %>
+                                            <h4 id="name">
+                                                <%= checkout.date?.toLocaleDateString() %>
+                                            </h4>
+                                        <% } %>
+                                        
+                                        
+                                        <p class="info">Data pobrania: <strong><%= checkout?.takenDate?.toLocaleDateString() %></strong></p>
+                                        <p class="info">Data opracowania: <strong><%= checkout?.passedBackDate?.toLocaleDateString() %></strong></p>
+                                        <p class="info">Głosiciel: <strong><%= checkout?.preacher?.name %></strong></p>
+                                        
+                                        <% if(!checkout.takenDate || !checkout.passedBackDate){ %>
+                                            <p class="info">Ostatnio opracowane: <strong><%= checkout.record?.lastWorked %></strong></p>
+                                                        
+                                                        <% if(typeof checkout.preacher !== 'undefined'){ %>
+                                                            
+                                                            <p class="info">Pobrany: <strong><%= checkout.record?.taken %></strong></p>
+                                                            
+                                                        <% } %>
+                                        <% } %>
+                                        
+                                                
+                                                         
+                                                        <hr>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        <% } %>
+                        
+                    </div>
+                   
+                </div>
+            <% } %>
+        </div>
+    </div>

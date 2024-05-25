@@ -1,0 +1,91 @@
+<%- include("../partials/headera") %>
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-12" id="form">
+            <div class="text-center">
+                <img src="/logo_tm_website.png" alt="logo">
+            </div>
+            <div id="form1">
+                <div class="text-center">
+                    <a href="/territories/<%= territoryID %>">
+                        <i class="fas fa-arrow-left"></i>
+                        Wróć do historii terenu nr <%= checkout.record.number %>
+                    </a>
+                </div>
+                <h1 class="login">Edytuj rekord historii terenu nr <%= checkout.record.number %> (data rekordu: <%= checkout.date.toLocaleDateString() %>)</h1>
+                <% if(error.length > 0){ %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success.length > 0){ %>
+                    <div class="alert alert-success" role="alert">
+                        <%= success %>
+                    </div>
+                <% } %>
+                    <form action="/territories/<%= territoryID %>/checkouts/<%= checkout._id %>?_method=PUT" method="POST" id="form4">
+                        
+                        <div class="form-floating mb-3">
+                       
+                            <input type="date" name="checkout[date]" value="<%= checkout.date %>" class="form-control">
+                            <label for="number" class="username">
+                                Edytuj datę rekordu
+                                
+                            </label>
+                            
+                        </div>
+                        <div class="form-floating mb-3">
+                       
+                            <input type="date" name="checkout[takenDate]" id="passedBackDate" value="<%= checkout.takenDate %>" class="form-control">
+                            <label for="takenDate" class="username">
+                                Edytuj datę pobrania
+                                
+                            </label>
+                            
+                        </div>
+
+                        <div class="form-floating mb-3">
+                       
+                            <input type="date" name="checkout[passedBackDate]" id="passedBackDate" value="<%= checkout.passedBackDate %>" class="form-control">
+                            <label for="passedBackDate" class="username">
+                                Edytuj datę opracowania
+                                
+                            </label>
+                            
+                        </div>
+                        <div class="form-floating mb-3">
+                       
+                            <select name="checkout[preacher]" id="preacher" class="form-select">
+                                <% if(typeof checkout.preacher !== 'undefined'){ %>
+                                    <option value="<%= checkout.preacher._id %>" ><%= checkout.preacher.name %></option>
+                                <% } %>
+                               
+                                <option value="">Wolny teren</option>
+                                
+                                <% for(let i=0; i<preachers.length;i++){ %>
+                                    <option value="<%= preachers[i]._id %>"><%= preachers[i].name %></option>
+                                <% } %>
+                            </select>
+                            <label for="description" class="username">
+                                Edytuj lub wybierz głosiciela
+                                
+                            </label>
+                            
+                        </div>
+                        <input type="submit" value="Edytuj rekord w historii" class="btn btn-success button btn-green" id="send">
+                    </form>
+                </div>
+                            
+            </div>
+            
+        </div>
+
+
+<script src="/script.js"></script>
+<script>
+    document.getElementById("form4").addEventListener("submit", function(){
+        document.getElementById("send").setAttribute("disabled", "disabled");
+        document.getElementById("send").innerText = `Edytowanie...`;
+    })
+</script>    
+</body>
+</html>
