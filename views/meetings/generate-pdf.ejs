@@ -1,0 +1,163 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;700&family=Montserrat:wght@100;300;400;700&family=Poppins:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            -webkit-font-style: normal;
+            font-style: normal;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0 15px;
+            -webkit-font-style: normal;
+            font-style: normal;
+        }
+        .info {
+            margin: 10px 0;
+            font-size: 17px;
+            font-family: 'Poppins', sans-serif;
+        }
+        i {
+            margin-right: 7px;
+        }
+        .meetings {
+            display: -webkit-box;
+            display: -webkit-flex;
+            -webkit-flex-wrap: wrap;
+            -webkit-justify-content: space-between;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .meeting {
+            width: 48%;
+        }
+        .assignment {
+            padding: 10px 0;
+        }
+        .assignment_type {
+            padding: 10px;
+            font-size: 19px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: white;
+        }
+        .assignment_topic {
+            margin: 10px 0;
+            font-size: 17px;
+            font-weight: 400;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row" style="margin-top: 5%;">
+            <div class="col-lg-12">
+                <h1 class="text-center" style="font-weight: 700;"><%= type %> - <%= month %></h1>
+                <div class="meetings">
+                    <% groupBy(meetings, 'month')[month].filter((meeting) => meeting.type === type).forEach((meeting) => { %>
+                        <div class="meeting" style="margin-bottom: 20px;">
+                            <h3 style="font-size: 28px;"><%= new Date(meeting.date).toLocaleString('pl-PL', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: false
+                            }) %></h3>
+                
+                            <div class="info">
+                                <span>
+                                    Sprzątanie:
+                                    <strong><%= meeting.cleaningGroup?.name %></strong>
+                                </span>
+                            </div>
+                            <div class="info">
+                                <span>
+                                    Pieśń: 
+                                    <strong><%= meeting.beginSong %></strong>
+                                </span>
+                            </div>
+                            <div class="info">
+                                Prowadzący:
+                                <span>
+                                    <strong><%= meeting.lead?.name %></strong>
+                                </span>
+                            </div>
+                            <div class="info">
+                                Modlitwa:
+                                <span>
+                                    <strong><%= meeting.beginPrayer?.name %></strong>
+                                </span>
+                            </div>
+                            <div class="assignments">
+                                <% Object.keys(groupBy(meeting.assignments, 'type')).forEach((assignmentType) => { %>
+                                    <div class="assignment">
+                                        <% if(assignmentType === "Studium Strażnicy" || assignmentType === "Chrześcijański tryb życia"){ %>
+                                            <div class="info">
+                                                Pieśń:
+                                                <span>
+                                                    <strong><%= meeting.midSong %></strong>
+                                                </span>
+                                            </div>
+                                        <% } %>
+                                        <div class="assignment_type" style="background: <%= chooseMeetingTypeColorAndIcon(assignmentType).fontColor  %>;">
+                                            <%= assignmentType %>
+                                        </div>
+                                        <% groupBy(meeting.assignments, 'type')[assignmentType].forEach((assignment) => { %>
+                                            <p class="assignment_topic" style="color: <%= chooseMeetingTypeColorAndIcon(assignmentType).fontColor  %>;"><%= assignment.topic || assignment.defaultTopic %></p>
+                                            <div class="info">
+                                            
+                                        
+                                                <span>
+                                                    <strong><%= assignment.participant?.name || assignment.otherParticipant %></strong>
+                                                </span>
+                                            </div>
+                                            <% if(assignment.reader){ %>
+                                                <div class="info">
+                                                   
+                                                    Lektor:
+                                                    <span>
+                                                        <strong><%= assignment.reader?.name %></strong>
+                                                    </span>
+                                                </div>
+                                            <% } %>
+                                        <% }) %>
+                                        
+                                    </div>
+                            
+                                <% }) %>
+                            </div>
+                            <hr style="height: 1px; background-color: black;">
+                            <div class="info">
+                                
+                                <span>
+                                    Pieśń: 
+                                    <strong><%= meeting.endSong %></strong>
+                                </span>
+                            </div>
+                
+                            <div class="info">
+                                
+                                Modlitwa końcowa:
+                                <span>
+                                    <strong><%= meeting.beginPrayer?.name || meeting.otherEndPrayer %></strong>
+                                </span>
+                            </div>
+                            <hr>
+                        </div>
+                       
+                    <% }) %>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</body>

@@ -6,7 +6,7 @@ import passport from "passport";
 import dotenv from 'dotenv';
 import node_geocoder from "node-geocoder";
 import methodOverride from "method-override";
-import { sendEmail } from "../helpers.js";
+import { months, sendEmail } from "../helpers.js";
 import Activity from "../models/activity.js";
 import Territory from "../models/territory.js";
 
@@ -39,7 +39,7 @@ export const renderRegisterCongregationForm = (req, res, next) => {
 export const registerCongregation = (req, res, next) => {
     if(req.body.password !== req.body.confirm){
         req.flash("error", "Hasła nie są te same");
-        res.render("./congregations/new", { error:  "Hasła nie są te same", congregation: req.body, header: "Rejestracja zboru | Territory Manager"});
+        res.render("./congregations/new", { error:  "Hasła nie są te same", congregation: req.body, header: "Rejestracja zboru | Congregation Planner"});
     } else {
         geocoder.geocode(req.body.mainCity, function (err, data) {
             if (err || !data.length) {
@@ -99,7 +99,7 @@ export const renderCongregationInfo = (req, res, next) => {
                         .exec()
                         .then((territories) => {
                             res.render("./congregations/show", {
-                                header: `Zbór ${congregation.username} | Territory Manager`,
+                                header: `Zbór ${congregation.username} | Congregation Planner`,
                                 congregation,
                                 currentUser: req.user,
                                 ministryGroups,
@@ -122,7 +122,7 @@ export const renderEditCongregationForm = (req, res, next) => {
             res.render("./congregations/edit", { 
                 currentUser: req.user, 
                 congregation: congregation, 
-                header: `Edytuj głosiciela w zborze ${req.user.username} | Territory Manager`
+                header: `Edytuj głosiciela w zborze ${req.user.username} | Congregation Planner`
             });
         })
         .catch((err) => console.log(err));
@@ -160,14 +160,14 @@ export const renderVerificationForm = (req, res, next) => {
         .exec()
         .then((congregation) => {
             if(congregation){
-                let header = "Weryfikacja konta | Territory Manager"
+                let header = "Weryfikacja konta | Congregation Planner"
                 res.render("./congregations/verification", {
                     header: header,
                     congregation: congregation
                 })
             } else {
                 req.flash("error", "Kod weryfikacyjny wygasł lub nie ma takiego konta. Kliknij przycisk Wyślij kod ponownie poniżej ")
-                let header = "Weryfikacja konta | Territory Manager"
+                let header = "Weryfikacja konta | Congregation Planner"
                 res.render("./congregations/verification", {
                     header: header,
                     congregation_id: req.params.congregation_id
@@ -221,7 +221,7 @@ export const resendVerificationCode = (req, res, next) => {
             congregation.save()
             const subject = 'Ponowne wysłanie kodu, by potwierdzić email';
             const emailText = `Właśnie dostałem prośbę o ponowne wysłanie kodu do
-                weryfikacji emaila w Territory Manager.
+                weryfikacji emaila w Congregation Planner.
                 Jeśli to nie byłeś ty, zignoruj wiadomość.`;
             sendEmail(subject, congregation.territoryServantEmail, emailText, congregation)
             sendEmail(subject, congregation.ministryOverseerEmail, emailText, congregation)
@@ -241,7 +241,7 @@ export const renderTwoFactorForm = (req, res, next) => {
         .exec()
         .then((congregation) => {
             if(congregation){
-                let header = "Dwustopniowa weryfikacja | Territory Manager"
+                let header = "Dwustopniowa weryfikacja | Congregation Planner"
                 res.render("./congregations/two-factor", {
                     header: header,
                     congregation: congregation,
@@ -249,7 +249,7 @@ export const renderTwoFactorForm = (req, res, next) => {
                 })
             } else {
                 req.flash("error", "Kod weryfikacyjny wygasł lub nie ma takiego konta. Kliknij przycisk Wyślij kod ponownie poniżej ")
-                let header = "Dwustopniowa werfyikacja | Territory Manager"
+                let header = "Dwustopniowa werfyikacja | Congregation Planner"
                 res.render("./congregations/two-factor", {
                     header: header,
                     congregation_id: req.params.congregation_id
@@ -271,8 +271,8 @@ export const verifyTwoFactor = (req, res, next) => {
         .exec()
         .then((congregation) => {
             if(congregation){
-                req.flash("success", `Pomyślnie zalogowałeś się do Territory Manager`)
-                res.redirect(`/territories/available`)
+                req.flash("success", `Pomyślnie zalogowałeś się do Congregation Planner`)
+                res.redirect(`/meetings?type=${new Date().getDay() === 0 || new Date().getDay() === 6 ? "Zebranie w weekend" : "Zebranie w tygodniu"}&month=${months[new Date().getMonth()] + " " + new Date().getFullYear()}`)
             } else {
                 req.flash("error", "Kod weryfikacyjny wygasł lub nie ma takiego konta. Kliknij przycisk Wyślij kod ponownie poniżej ")
                 res.redirect("back")
@@ -297,7 +297,7 @@ export const resendTwoFactorCode = (req, res, next) => {
             congregation.save()
             const subject = 'Ponowne wysłanie kodu weryfikacyjnego';
             let emailText = `Właśnie dostałem prośbę o ponowne wysłanie kodu do
-            dwustopniowej weryfikacji logowania do Territory Manager.
+            dwustopniowej weryfikacji logowania do Congregation Planner.
             Jeśli to nie byłeś ty, zignoruj wiadomość.`;
             
             sendEmail(subject, congregation.territoryServantEmail, emailText, congregation)
@@ -313,7 +313,7 @@ export const getAllCongregationActivities = (req, res, next) => {
         .exec()
         .then((activities) => res.render('./congregations/activity', {
             activities,
-            header: 'Aktywności logowania | Territory Manager',
+            header: 'Aktywności logowania | Congregation Planner',
             currentUser: req.user
         }))
         .catch((err) => console.log(err))

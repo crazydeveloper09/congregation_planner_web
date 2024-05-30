@@ -86,8 +86,6 @@
         const locations = <%-JSON.stringify(result.docs)%>;
         const countDays = <%-countDaysFromNow%>
 
-        console.log(countDays)
-
         async function initMap() {
             const { Map, InfoWindow } = await google.maps.importLibrary("maps");
             const { AdvancedMarkerElement, PinElement } = await google.maps.importLibrary("marker");

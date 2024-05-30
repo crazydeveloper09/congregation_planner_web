@@ -8,9 +8,9 @@
                 </div>
                 
                 <h1 class="login">Zaloguj się do panelu</h1>
-                <h2>
-                  Na razie do logowania służy tylko aplikacja mobilna. Za utrudnienia, przepraszamy.
-              </h2>
+                <h4>
+                  Można logowac się jako administrator, ale będzie tylko wyświetlanie planów zebrań, zbiórek i audio-wideo
+              </h4>
                 <% if(error.length > 0){ %>
                     <div class="alert alert-danger" role="alert">
                         <%= error %>
@@ -22,7 +22,7 @@
                     </div>
                 <% } %>
                     
-                        <form id="form4">
+                        <form method="post" action="/login" id="form4">
                             <div class="form-floating mb-3">
                        
                                         <input type="text" class="form-control" autocomplete="off" name="username" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
@@ -43,7 +43,7 @@
                                         </label>
                                         
                                     </div>
-                                    <input type="submit" value="Zaloguj się" class="btn btn-success button btn-green" id="send">
+                                    <input type="submit" value="Zaloguj się" class="btn btn-primary button btn-green" id="send">
 
                         </form>
                     </div>

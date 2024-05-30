@@ -14,28 +14,48 @@
         
         <nav class="my_nav fixed-bottom">
             <ul>
-                <% if(typeof home !== 'undefined'){ %>
+                <% if(typeof meetings !== 'undefined' && header === "Zebrania | Congregation Planner"){ %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link my_active" href="/territories/available"><i class="fa-solid fa-house"></i> <br> Home</a>
+                        <a class="my_nav-link my_active" href="/meetings?type=<%= new Date().getDay() === 0 || new Date().getDay() === 6 ? "Zebranie w weekend" : "Zebranie w tygodniu" %>&month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-tie"></i> <br> Zebrania</a>
                     </li>
                 <% } else { %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link" href="/territories/available"><i class="fa-solid fa-house"></i> <br> Home</a>
+                        <a class="my_nav-link" href="/meetings?type=<%= new Date().getDay() === 0 || new Date().getDay() === 6 ? "Zebranie w weekend" : "Zebranie w tygodniu" %>&month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-tie"></i> <br> Zebrania</a>
                     </li>
                 <% } %>
                 
-                <% if(typeof all !== 'undefined'){ %>
+                <% if(typeof ministryMeetings !== 'undefined'){ %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link my_active" href="/territories?page=1"><i class="fas fa-map-marked-alt"></i> <br> Tereny</a>
+                        <a class="my_nav-link my_active" href="/ministryMeetings?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fas fa-briefcase"></i> <br> Zbiórki</a>
                     </li>
                 <% } else { %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link" href="/territories?page=1"><i class="fas fa-map-marked-alt"></i> <br> Tereny</a>
+                        <a class="my_nav-link" href="/ministryMeetings?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fas fa-briefcase"></i> <br> Zbiórki</a>
                     </li>
                 <% } %>
             
                 
-                <% if(typeof pre !== 'undefined'){ %>
+                <% if(header === "Audio-video | Congregation Planner"){ %>
+                    <li class="my_nav-item">
+                        <a class="my_nav-link my_active" href="/meetings/audioVideo?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-headphones"></i> <br> Audio-video</a>
+                    </li>
+                <% } else { %>
+                    <li class="my_nav-item">
+                        <a class="my_nav-link" href="/meetings/audioVideo?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-headphones"></i> <br> Audio-video</a>
+                    </li>
+                <% } %>
+
+                <% if(header === "Porządkowi | Congregation Planner"){ %>
+                    <li class="my_nav-item">
+                        <a class="my_nav-link my_active" href="/meetings/ordinals?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-shield"></i> <br> Porządkowi</a>
+                    </li>
+                <% } else { %>
+                    <li class="my_nav-item">
+                        <a class="my_nav-link" href="/meetings/ordinals?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-shield"></i> <br> Porządkowi</a>
+                    </li>
+                <% } %>
+
+                <!-- <% if(typeof pre !== 'undefined'){ %>
                     <li class="my_nav-item">
                         <a class="my_nav-link my_active" href="/preachers?page=1"><i class="fa-solid fa-user"></i> <br> Głosiciele</a>
                     </li>
@@ -43,17 +63,17 @@
                     <li class="my_nav-item">
                         <a class="my_nav-link" href="/preachers?page=1"><i class="fa-solid fa-user"></i> <br> Głosiciele</a>
                     </li>
-                <% } %>
+                <% } %> -->
     
-                <% if(typeof congregation !== 'undefined'){ %>
+                <!-- <% if(typeof congregation !== 'undefined'){ %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link my_active" href="/congregations/<%= currentUser._id %>"><i class="fa-solid fa-people-group"></i> <br> Zbór</a>
+                        <a class="my_nav-link my_active" href="/congregations/<%= currentUser?._id %>"><i class="fa-solid fa-people-group"></i> <br> Zbór</a>
                     </li>
                 <% } else { %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link" href="/congregations/<%= currentUser._id %>"><i class="fa-solid fa-people-group"></i> <br> Zbór</a>
+                        <a class="my_nav-link" href="/congregations/<%= currentUser?._id %>"><i class="fa-solid fa-people-group"></i> <br> Zbór</a>
                     </li>
-                <% } %>
+                <% } %> -->
         
                 <li class="my_nav-item">
                     <a class="my_nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> <br> Wyloguj</a>

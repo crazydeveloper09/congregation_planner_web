@@ -1,0 +1,78 @@
+<%- include("../partials/header") %>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="text-center">Porządkowi</h1>
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-12">
+                    <form action="/meetings/ordinals" method="get">
+                        
+                        <div class="form-floating mb-3">
+                            <select id="month" name="month" class="form-control" required>
+                                <% Object.keys(groupBy(meetings, 'month')).forEach((currentMonth) => { %>
+                                    <% if(currentMonth === month){ %>
+                                        <option value="<%= currentMonth %>" selected><%= currentMonth %></option>
+                                    <% } else { %>
+                                        <option value="<%= currentMonth %>"><%= currentMonth %></option>
+                                    <% } %>
+                                <% }) %>
+                                
+                            </select>
+                            <label for="month" class="username">
+                                Wybierz miesiąc
+                                
+                            </label>
+                            
+                        </div>
+                        <input type="submit" value="Szukaj" class="btn btn-primary btn-blue">
+                    </form>
+                </div>
+            </div>
+            <% if(meetings.length === 0){ %>
+                <div class="alert alert-info text-center">
+                    Nie dodano zebrań
+                </div>
+            <% } else { %>
+                <% if(groupBy(meetings, 'month')[month].length === 0){ %>
+                    <div class="alert alert-info text-center">
+                        Nie znaleziono zebrań
+                    </div>
+                <% } else { %>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Porządkowy 1</th>
+                                <th>Porządkowy 2</th>
+                                <th>Audytorium</th>
+                                <th>Parking</th>
+                            </tr>
+                            
+                        </thead>
+                        <tbody>
+                            <% groupBy(meetings, 'month')[month].forEach((meeting) => { %>
+                                <tr class="text-center">
+                                    <td><%= new Date(meeting.date).toLocaleDateString('pl-PL') %></td>
+                                    <td><%= meeting.ordinal?.hallway1?.name %></td>
+                                    <td><%= meeting.ordinal?.hallway2?.name || "Nie przydzielono" %></td>
+                                    <td><%= meeting.ordinal?.auditorium?.name %></td>
+                                    <td><%= meeting.ordinal?.parking?.name || "Nie przydzielono" %></td>
+                                </tr>
+                                
+                            
+                            <% }) %>
+                        </tbody>
+            
+                    </table>
+                    <div class="text-center">
+                        <a href="/meetings/ordinals/generate-pdf?month=<%= month %>" class="link-to-generate">Generuj plan Porządkowi - <%= month %></a>
+                    </div>
+                    
+                <% } %>
+            <% } %>
+
+        </div>
+    </div>
+</div>
+    
+<%- include("../partials/footer") %>

@@ -5,6 +5,42 @@ body {
     background: #ece9e9;
 }
 
+.info {
+    margin: 10px 0;
+    font-size: 17px;
+    font-family: 'Poppins', sans-serif;
+}
+i {
+    margin-right: 7px;
+}
+.meetings {
+    display: -webkit-box;
+    display: -webkit-flex;
+    -webkit-flex-wrap: wrap;
+    -webkit-justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.meeting {
+    width: 48%;
+}
+.assignment {
+    padding: 10px 0;
+}
+.assignment_type {
+    padding: 10px;
+    font-size: 19px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: white;
+}
+.assignment_topic {
+    margin: 10px 0;
+    font-size: 17px;
+    font-weight: 400;
+}
+
 .my_nav {
     display: flex;
     justify-content: center;
@@ -35,7 +71,7 @@ body {
 }
 
 .my_nav-link.my_active {
-    color: #28a745;
+    color: #1f8aad;
 }
 
 .navbar-brand {
@@ -56,12 +92,12 @@ body {
 }
 
 .page-link {
-    color: #28a745;
+    color: #1f8aad;
 }
 
 .page-item.active .page-link{
-    background: #28a745;
-    border-color: #28a745;
+    background: #1f8aad;
+    border-color: #1f8aad;
     font-weight: 700;
 }
 .card {
@@ -97,14 +133,14 @@ body {
     margin: 15px 0;
 }
 h1 {
-    color: #28a745;
+    color: #1f8aad;
     font-size: 35px;
     font-weight: 700;
     margin-top: 20px;
 }
 
 h4 {
-    color: #28a745;
+    color: #1f8aad;
     font-size: 22px;
     font-weight: 400;
 }
@@ -114,7 +150,7 @@ th a {
 }
 thead,
 .ministryGroup__title {
-    background: #9999CC;
+    background: #1f8aad;
     color: #fff;
     border-color: #fff;
     padding: 5px;
@@ -148,7 +184,18 @@ thead,
 .preachers-buttons a {
     text-decoration: none;
     font-size: 20px;
-    color: #9999CC;
+    color: #1f8aad;
+}
+
+.btn-blue {
+    background: #1f8aad;
+    border-color: #1f8aad;
+}
+
+.link-to-generate {
+    text-decoration: none;
+    color: #1f8aad;
+    font-size: 21px;
 }
 
 .preachers-buttons a:first-child {
@@ -190,7 +237,7 @@ thead,
 }
 
 .login {
-    color: #28a745;
+    color: #1f8aad;
     font-size: 35px;
 }
 
@@ -201,7 +248,7 @@ thead,
 
 .details-item:hover {
     cursor: pointer;
-    background: #28a745;
+    background: #1f8aad;
     color: white;
     padding: 4px 8px;
 }
@@ -219,16 +266,16 @@ thead,
 
 input[type=search] {
     
-    color: #28a745;
+    color: #1f8aad;
 }
 
 .form-control:focus {
     box-shadow: none;
-    border-color: #28a745;
+    border-color: #1f8aad;
 }
 
 input[type=search]::placeholder {
-    color: #28a745;
+    color: #1f8aad;
 }
 
 .congregation__info {
@@ -256,7 +303,7 @@ input[type=search]::placeholder {
     justify-content: space-between;
     align-items: baseline;
     width: 100%;
-    border: 1px solid #9999CC;
+    border: 1px solid #1f8aad;
     border-radius: 10px;
     margin-top: 15px;
     padding: 15px;
@@ -264,7 +311,7 @@ input[type=search]::placeholder {
 
 .preacher__link {
     font-size: 17px;
-    color: #28a745;
+    color: #1f8aad;
     text-decoration: none;
     letter-spacing: 0.1em;
 }
@@ -286,8 +333,8 @@ input[type=search]::placeholder {
   }
   
   .btn-green {
-    background: #28a745;
-    border-color: #28a745;
+    background: #1f8aad;
+    border-color: #1f8aad;
   }
 
   .accordion-item,

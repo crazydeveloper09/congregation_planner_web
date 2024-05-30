@@ -1,6 +1,6 @@
 {
-  "name": "territoryhelper",
-  "version": "2.0.0",
+  "name": "congregation_planner_web",
+  "version": "0.1.0",
   "description": "",
   "main": "app.js",
   "scripts": {
