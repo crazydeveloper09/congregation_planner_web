@@ -7,9 +7,9 @@
                     <img src="/logo_cong_website.png" alt="logo">
                 </div>
                 
-                <h1 class="login">Zaloguj się do panelu</h1>
+                <h1 class="login"><%= language.__("loginHeading") %></h1>
                 <h4>
-                  Można logowac się jako administrator, ale będzie tylko wyświetlanie planów zebrań, zbiórek i audio-wideo
+                    <%= language.__("temporaryInfo") %>
               </h4>
                 <% if(error.length > 0){ %>
                     <div class="alert alert-danger" role="alert">
@@ -27,7 +27,7 @@
                        
                                         <input type="text" class="form-control" autocomplete="off" name="username" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
                                         <label for="username" class="username">
-                                            Nazwa zboru
+                                            <%= language.__("usernameLabel") %>
                                             
                                         </label>
                                         
@@ -38,12 +38,12 @@
                        
                                         <input type="password" class="form-control" autocomplete="off" name="password" id="password" placeholder="1234" aria-label="Hasło" aria-describedby="basic-addon1">
                                         <label for="password" class="username">
-                                            Hasło
+                                            <%= language.__("passwordLabel") %>
                                             
                                         </label>
                                         
                                     </div>
-                                    <input type="submit" value="Zaloguj się" class="btn btn-primary button btn-green" id="send">
+                                    <input type="submit" value="<%= language.__("loginButtonText") %>" class="btn btn-primary button btn-green" id="send">
 
                         </form>
                     </div>
@@ -59,7 +59,7 @@
 
     document.getElementById("form4").addEventListener("submit", function(){
         document.getElementById("send").setAttribute("disabled", "disabled");
-        document.getElementById("send").innerText = `Logowanie...`;
+        document.getElementById("send").innerText = `<%= language.__("loginAction") %>`;
     })
 
     

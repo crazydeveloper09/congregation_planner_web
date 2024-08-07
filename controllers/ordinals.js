@@ -9,6 +9,7 @@ import { __dirname } from "../app.js";
 import Meeting from "../models/meeting.js";
 import { meetingPopulate } from "./meeting.js";
 import { groupBy, months } from "../helpers.js";
+import i18n from "i18n";
 const app = express();
 
 app.use(flash());
@@ -16,6 +17,7 @@ app.use(methodOverride("_method"))
 
 export const generateListOfOrdinals = (req, res, next) => {
     const congregationID = req.user.username ? req.user._id : req.user.congregation;
+    i18n.setLocale(req.language);
     Meeting
         .find({ $and: [
             {congregation: congregationID},
@@ -27,13 +29,14 @@ export const generateListOfOrdinals = (req, res, next) => {
         .then((meetings) => {
             let data = {
                 month: req.query.month,
-                meetings
+                meetings,
+                language: i18n
             };
     
             ejs.renderFile(path.join(__dirname, './views/ordinals/generate-pdf.ejs'), data, {}, function(err, str) {
                 if (err) return res.send({...err, line: 28});
 
-                const title = `Porządkowi - ${req.query.month}`;
+                const title = `${i18n.__("sectionText")} - ${req.query.month}`;
                 const DOWNLOAD_DIR = path.join(process.env.HOME || process.env.USERPROFILE, 'downloads/')
 
 
@@ -58,6 +61,7 @@ export const generateListOfOrdinals = (req, res, next) => {
 export const getListOfOrdinals = (req, res, next) => {
     
     const congregationID = req.user.username ? req.user._id : req.user.congregation;
+    i18n.setLocale(req.language);
     Meeting
         .find({congregation: congregationID})
         .populate(meetingPopulate)
@@ -69,7 +73,7 @@ export const getListOfOrdinals = (req, res, next) => {
                 month: req.query.month,
                 groupBy,
                 months,
-                header: 'Porządkowi | Congregation Planner',
+                header: `${i18n.__("sectionText")} | Congregation Planner`,
             })
         })
         .catch((err) => console.log(err))

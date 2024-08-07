@@ -4,7 +4,8 @@ import passport from "passport";
 import methodOverride from "method-override";
 import { sendEmail } from "../helpers.js";
 import Activity from "../models/activity.js";
-import ipWare from 'ipware'
+import ipWare from 'ipware';
+import i18n from "i18n";
 
 const app = express();
 const getIP = ipWare().get_ip;
@@ -17,24 +18,27 @@ export const redirectToLogin = (req, res, next) => {
 }
 
 export const renderLoginForm = (req, res, next) => {
+    i18n.setLocale(req.language);
     let ipInfo = getIP(req);
     res.render("login", {
-        header: "Logowanie | Congregation Planner",
+        header: `${i18n.__("loginHeader")} | Congregation Planner`,
         ipInfo
     });
 }
 
 export const renderPrivacyPolicy = (req, res, next) => {
-    res.render("policy", {
-        header: "Polityka Prywatności i klauzula RODO | Congregation Planner"
+    i18n.setLocale(req.language);
+    res.render(`policy_${req.language === "pl" ? "pl": "en"}`, {
+        header: `${i18n.__("policyLabel")} | Congregation Planner`
     });
 }
 
 export const authenticateCongregation = (req, res, next) => {
+    i18n.setLocale(req.language);
     passport.authenticate('local', function(err, user, info) {
         if (err) { return next(err); }
         if (!user) {
-            req.flash("error", "Zła nazwa użytkownika lub hasło");
+            req.flash("error", i18n.__("badLogIn"));
             return res.redirect(`/login`);
         }
         if(user.verificated){
@@ -51,9 +55,8 @@ export const authenticateCongregation = (req, res, next) => {
                 user.verificationNumber = verificationCode;
                 user.verificationExpires = Date.now() + 360000;
                 user.save()
-                const subject = 'Potwierdź swoją tożsamość';
-                const emailText = `Zanim będziesz mógł zarządzać planami zborowymi
-                chcę mieć pewność, że loguje się jeden z dwóch adminów. Proszę wpisz na stronie poniższy kod weryfikacyjny.`;
+                const subject = i18n.__("twoFactorTitle");
+                const emailText = i18n.__("twoFactorMessage");
                 sendEmail(subject, user.territoryServantEmail, emailText, user)
                 sendEmail(subject, user.ministryOverseerEmail, emailText, user)
                 return res.redirect(`/congregations/${user._id}/two-factor`);

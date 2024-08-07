@@ -1,15 +1,15 @@
 <%- include("../partials/header") %>
 <div class="container">
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="text-center">Zbiórki</h1>
+        <div class="col-lg-12"   style="margin-bottom: 80px;">
+            <h1 class="text-center"><%= language.__("ministryMeetingSectionText") %></h1>
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-12">
                     <form action="/ministryMeetings" method="get">
                         
                         <div class="form-floating mb-3">
                             <select id="month" name="month" class="form-control" required>
-                                <% Object.keys(groupBy(ministryMeetings, 'month')).forEach((currentMonth) => { %>
+                                <% Object.keys(groupBy(ministryMeetings, 'month'))?.forEach((currentMonth) => { %>
                                     <% if(currentMonth === month){ %>
                                         <option value="<%= currentMonth %>" selected><%= currentMonth %></option>
                                     <% } else { %>
@@ -19,23 +19,23 @@
                                 
                             </select>
                             <label for="month" class="username">
-                                Wybierz miesiąc
+                                <%= language.__("chooseMonthLabel") %>
                                 
                             </label>
                             
                         </div>
-                        <input type="submit" value="Szukaj" class="btn btn-primary btn-blue">
+                        <input type="submit" value="<%= language.__("searchButton") %>" class="btn btn-primary btn-blue">
                     </form>
                 </div>
             </div>
             <% if(ministryMeetings.length === 0){ %>
                 <div class="alert alert-info text-center">
-                    Nie dodano zbiórek
+                    <%= language.__("ministryMeetingNoEntryText") %>
                 </div>
             <% } else { %>
-                <% if(groupBy(ministryMeetings, 'month')[month].length === 0){ %>
+                <% if(groupBy(ministryMeetings, 'month')[month]?.length === 0){ %>
                     <div class="alert alert-info text-center">
-                        Nie znaleziono zbiórek
+                        <%= language.__("ministryMeetingNotFoundText") %>
                     </div>
                 <% } else { %>
 
@@ -43,15 +43,15 @@
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Data i czas</th>
-                            <th>Miejsce</th>
-                            <th>Temat</th>
-                            <th>Prowadzący</th>
+                            <th><%= language.__("dateLabel") %></th>
+                            <th><%= language.__("placeLabel") %></th>
+                            <th><%= language.__("topicLabel") %></th>
+                            <th><%= language.__("leadLabel") %></th>
                         </tr>
                         
                     </thead>
                     <tbody>
-                        <% groupBy(ministryMeetings, 'month')[month].forEach((meeting) => { %>
+                        <% groupBy(ministryMeetings, 'month')[month]?.forEach((meeting) => { %>
                             <tr class="text-center">
                                 <td><%= new Date(meeting.date).toLocaleString('pl-PL', {
                                     year: 'numeric',
@@ -62,7 +62,7 @@
                                     hour12: false
                                 }) %></td>
                                 <td><%= meeting.place || meeting.defaultPlace %></td>
-                                <td><%= meeting.topic || "Prowadzący sam wybiera temat" %></td>
+                                <td><%= meeting.topic || language.__("leadChooseTopicText") %></td>
                                 <td><strong><%= meeting.lead?.name %></strong></td>
                             </tr>
                             
@@ -72,7 +72,7 @@
         
                 </table>
                 <div class="text-center">
-                    <a href="/ministryMeetings/generate-pdf?month=<%= month %>" class="link-to-generate">Generuj plan Zbiórki - <%= month %></a>
+                    <a href="/ministryMeetings/generate-pdf?month=<%= month %>" class="link-to-generate"><%= language.__("generatePlan") %> <%= language.__("ministryMeetingSectionText") %> - <%= month %></a>
                 </div>
             <% } %>
         </div>

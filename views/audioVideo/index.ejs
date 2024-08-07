@@ -19,45 +19,45 @@
                                 
                             </select>
                             <label for="month" class="username">
-                                Wybierz miesiąc
+                                <%= language.__("chooseMonthLabel") %>
                                 
                             </label>
                             
                         </div>
-                        <input type="submit" value="Szukaj" class="btn btn-primary btn-blue">
+                        <input type="submit" value="<%= language.__("searchButton") %>" class="btn btn-primary btn-blue">
                     </form>
                 </div>
             </div>
             <% if(meetings.length === 0){ %>
                 <div class="alert alert-info text-center">
-                    Nie dodano zebrań
+                    <%= language.__("meetingNoEntryText") %>
                 </div>
             <% } else { %>
-                <% if(groupBy(meetings, 'month')[month].length === 0){ %>
+                <% if(groupBy(meetings, 'month')[month]?.length === 0){ %>
                     <div class="alert alert-info text-center">
-                        Nie znaleziono zebrań
+                        <%= language.__("notFoundText") %>
                     </div>
                 <% } else { %>
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
-                                    <th>Data</th>
-                                    <th>Wideo</th>
-                                    <th>Audio</th>
-                                    <th>Mikrofon 1</th>
-                                    <th>Mikrofon 2</th>
+                                    <th><%= language.__("dateLabel") %></th>
+                                    <th><%= language.__("videoOperatorLabel") %></th>
+                                    <th><%= language.__("audioOperatorLabel") %></th>
+                                    <th><%= language.__("mic1Label") %></th>
+                                    <th><%= language.__("mic2Label") %></th>
                                 </tr>
                                 
                             </thead>
                             <tbody>
-                                <% groupBy(meetings, 'month')[month].forEach((meeting) => { %>
+                                <% groupBy(meetings, 'month')[month]?.forEach((meeting) => { %>
                                     <tr class="text-center">
                                         <td><%= new Date(meeting.date).toLocaleDateString('pl-PL') %></td>
                                         <td><%= meeting.audioVideo?.videoOperator?.name %></td>
-                                        <td><%= meeting.audioVideo?.audioOperator?.name || "Nie przydzielono" %></td>
+                                        <td><%= meeting.audioVideo?.audioOperator?.name || language.__("noAssignmentText") %></td>
                                         <td><%= meeting.audioVideo?.microphone1Operator?.name %></td>
-                                        <td><%= meeting.audioVideo?.microphone2Operator?.name || "Nie przydzielono" %></td>
+                                        <td><%= meeting.audioVideo?.microphone2Operator?.name || language.__("noAssignmentText") %></td>
                                     </tr>
                                     
                                 
@@ -66,7 +66,7 @@
                 
                         </table>
                         <div class="text-center">
-                            <a href="/meetings/audioVideo/generate-pdf?month=<%= month %>" class="link-to-generate">Generuj plan Audio-video - <%= month %></a>
+                            <a href="/meetings/audioVideo/generate-pdf?month=<%= month %>" class="link-to-generate"><%= language.__("generatePlan") %> Audio-video - <%= month %></a>
                         </div>
                        
                 <% } %>

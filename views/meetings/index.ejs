@@ -2,7 +2,7 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-12"  style="margin-bottom: 50px;">
-            <h1 class="text-center">Zebrania</h1>
+            <h1 class="text-center"><%= language.__("meetingSectionText") %></h1>
             <div class="row justify-content-center">
                 <div class="col-lg-6 col-md-12">
                     <form action="/meetings" method="get">
@@ -19,7 +19,7 @@
                                 
                             </select>
                             <label for="type" class="username">
-                                Wybierz typ zebrania
+                                <%= language.__("meetingTypePlaceholder") %>
                                 
                             </label>
                             
@@ -36,32 +36,32 @@
                                 
                             </select>
                             <label for="month" class="username">
-                                Wybierz miesiąc
+                                <%= language.__("chooseMonthLabel") %>
                                 
                             </label>
                             
                         </div>
-                        <input type="submit" value="Szukaj" class="btn btn-primary btn-blue">
+                        <input type="submit" value="<%= language.__("searchButton") %>" class="btn btn-primary btn-blue">
                     </form>
                 </div>
             </div>
             
             <% if(meetings.length === 0){ %>
                 <div class="alert alert-info text-center">
-                    Nie dodano jeszcze zebrań
+                    <%= language.__("meetingNoEntryText") %>
                 </div>
             <% } else { %>
-                <% if(groupBy(meetings, 'month')[month].filter((meeting) => meeting.type === type).length === 0){ %>
+                <% if(groupBy(meetings, 'month')[month]?.filter((meeting) => meeting.type === type)?.length === 0){ %>
                     <div class="alert alert-info text-center">
-                        Nie znaleziono zebrań
+                        <%= language.__("notFoundText") %>
                     </div>
                 <% } else { %>
                     <div class="text-center">
-                        <a href="/meetings/generate-pdf?month=<%= month %>&type=<%= type %>" class="link-to-generate">Generuj plan <%= type %> - <%= month %></a>
+                        <a href="/meetings/generate-pdf?month=<%= month %>&type=<%= type %>" class="link-to-generate"><%= language.__("generatePlan") %> <%= type %> - <%= month %></a>
                     </div>
                    
                             <div class="meetings">
-                                <% groupBy(meetings, 'month')[month].filter((meeting) => meeting.type === type).forEach((meeting) => { %>
+                                <% groupBy(meetings, 'month')[month]?.filter((meeting) => meeting.type === type)?.forEach((meeting) => { %>
                                     <div class="meeting" style="margin-bottom: 20px;">
                                         <h3 style="font-size: 28px;"><%= new Date(meeting.date).toLocaleString('pl-PL', {
                                             year: 'numeric',
@@ -74,24 +74,24 @@
                             
                                         <div class="info">
                                             <span>
-                                                Sprzątanie:
+                                                <%= language.__("cleaningLabel") %>:
                                                 <strong><%= meeting.cleaningGroup?.name %></strong>
                                             </span>
                                         </div>
                                         <div class="info">
                                             <span>
-                                                Pieśń: 
+                                                <%= language.__("songLabel") %>: 
                                                 <strong><%= meeting.beginSong %></strong>
                                             </span>
                                         </div>
                                         <div class="info">
-                                            Prowadzący:
+                                            <%= language.__("leadLabel") %>:
                                             <span>
                                                 <strong><%= meeting.lead?.name %></strong>
                                             </span>
                                         </div>
                                         <div class="info">
-                                            Modlitwa:
+                                            <%= language.__("prayerLabel") %>:
                                             <span>
                                                 <strong><%= meeting.beginPrayer?.name %></strong>
                                             </span>
@@ -99,9 +99,9 @@
                                         <div class="assignments">
                                             <% Object.keys(groupBy(meeting.assignments, 'type')).forEach((assignmentType) => { %>
                                                 <div class="assignment">
-                                                    <% if(assignmentType === "Studium Strażnicy" || assignmentType === "Chrześcijański tryb życia"){ %>
+                                                    <% if(assignmentType === language.__("watchtowerStudy") || assignmentType === language.__("livingAsChristians")){ %>
                                                         <div class="info">
-                                                            Pieśń:
+                                                            <%= language.__("songLabel") %>:
                                                             <span>
                                                                 <strong><%= meeting.midSong %></strong>
                                                             </span>
@@ -122,7 +122,7 @@
                                                         <% if(assignment.reader){ %>
                                                             <div class="info">
                                                                
-                                                                Lektor:
+                                                                <%= language.__("readerLabel") %>:
                                                                 <span>
                                                                     <strong><%= assignment.reader?.name %></strong>
                                                                 </span>
@@ -138,14 +138,14 @@
                                         <div class="info">
                                             
                                             <span>
-                                                Pieśń: 
+                                                <%= language.__("songLabel") %>: 
                                                 <strong><%= meeting.endSong %></strong>
                                             </span>
                                         </div>
                             
                                         <div class="info">
                                             
-                                            Modlitwa końcowa:
+                                            <%= language.__("endPrayerLabel") %>:
                                             <span>
                                                 <strong><%= meeting.beginPrayer?.name || meeting.otherEndPrayer %></strong>
                                             </span>

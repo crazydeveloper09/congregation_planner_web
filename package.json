@@ -18,6 +18,7 @@
     "express-session": "^1.17.0",
     "helmet": "^6.0.0",
     "html-pdf": "^3.0.1",
+    "i18n": "^0.15.1",
     "ipware": "^2.0.0",
     "mailgun-js": "^0.22.0",
     "method-override": "^3.0.0",

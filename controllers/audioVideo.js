@@ -10,6 +10,7 @@ import { __dirname } from "../app.js";
 import Meeting from "../models/meeting.js";
 import { meetingPopulate } from "./meeting.js";
 import { groupBy, months } from "../helpers.js";
+import i18n from "i18n";
 const app = express();
 
 app.use(flash());
@@ -28,9 +29,10 @@ export const generateListOfAudioVideos = (req, res, next) => {
         .then((meetings) => {
             let data = {
                 month: req.query.month,
-                meetings
+                meetings,
+                language: i18n
             };
-            ejs.renderFile(path.join(__dirname, './views/audioVideo/generate-pdf.ejs'), data, {}, function(err, str) {
+            ejs.renderFile('./views/audioVideo/generate-pdf.ejs', data, {}, function(err, str) {
                 if (err) return res.send(err);
 
                 const title = `Audio-video - ${req.query.month}`;

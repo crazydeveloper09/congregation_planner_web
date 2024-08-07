@@ -10,6 +10,7 @@ import path from 'path';
 import { __dirname } from "../app.js";
 import { chooseMeetingTypeColorAndIcon, groupBy, months } from "../helpers.js";
 import MeetingAssignment from "../models/meetingAssignment.js";
+import i18n from "i18n";
 const app = express();
 
 app.use(flash());
@@ -96,6 +97,7 @@ export const meetingPopulate = [
 ]
 
 export const generateListOfMeetings = (req, res, next) => {
+    i18n.setLocale(req.language);
     const congregationID = req.user.username ? req.user._id : req.user.congregation;
     Meeting
         .find({congregation: congregationID})
@@ -108,7 +110,8 @@ export const generateListOfMeetings = (req, res, next) => {
                 month: req.query.month,
                 type: req.query.type,
                 groupBy,
-                chooseMeetingTypeColorAndIcon
+                chooseMeetingTypeColorAndIcon,
+                language: i18n
             };
            
             ejs.renderFile(path.join(__dirname, './views/meetings/generate-pdf.ejs'), data, {}, function(err, str) {
@@ -137,7 +140,7 @@ export const generateListOfMeetings = (req, res, next) => {
 
 export const getListOfMeetings = (req, res, next) => {
     
-    const objectID = new mongoose.Types.ObjectId(req.user.congregation);
+    i18n.setLocale(req.language);
     const congregationID = req.user.username ? req.user._id : req.user.congregation;
     Meeting
         .find({congregation: congregationID})
@@ -151,7 +154,7 @@ export const getListOfMeetings = (req, res, next) => {
                 type: req.query.type,
                 groupBy,
                 months,
-                header: 'Zebrania | Congregation Planner',
+                header: `${i18n.__("meetingSectionText")} | Congregation Planner`,
                 chooseMeetingTypeColorAndIcon
             })
         })

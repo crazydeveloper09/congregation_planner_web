@@ -14,44 +14,44 @@
         
         <nav class="my_nav fixed-bottom">
             <ul>
-                <% if(typeof meetings !== 'undefined' && header === "Zebrania | Congregation Planner"){ %>
+                <% if(typeof meetings !== 'undefined' && header === `${language.__("meetingSectionText")} | Congregation Planner`){ %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link my_active" href="/meetings?type=<%= new Date().getDay() === 0 || new Date().getDay() === 6 ? "Zebranie w weekend" : "Zebranie w tygodniu" %>&month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-tie"></i> <br> Zebrania</a>
+                        <a class="my_nav-link my_active" href="/meetings?type=<%= new Date().getDay() === 0 || new Date().getDay() === 6 ? language.__("weekend") : language.__("midweek") %>&month=<%= language.__(months[new Date().getMonth()]) + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-tie"></i> <br> <%= language.__("meetingSectionText") %></a>
                     </li>
                 <% } else { %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link" href="/meetings?type=<%= new Date().getDay() === 0 || new Date().getDay() === 6 ? "Zebranie w weekend" : "Zebranie w tygodniu" %>&month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-tie"></i> <br> Zebrania</a>
+                        <a class="my_nav-link" href="/meetings?type=<%= new Date().getDay() === 0 || new Date().getDay() === 6 ? language.__("weekend") : language.__("midweek") %>&month=<%= language.__(months[new Date().getMonth()]) + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-tie"></i> <br> <%= language.__("meetingSectionText") %></a>
                     </li>
                 <% } %>
                 
                 <% if(typeof ministryMeetings !== 'undefined'){ %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link my_active" href="/ministryMeetings?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fas fa-briefcase"></i> <br> Zbiórki</a>
+                        <a class="my_nav-link my_active" href="/ministryMeetings?month=<%= language.__(months[new Date().getMonth()]) + " " + new Date().getFullYear() %>"><i class="fas fa-briefcase"></i> <br> <%= language.__("navText") %></a>
                     </li>
                 <% } else { %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link" href="/ministryMeetings?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fas fa-briefcase"></i> <br> Zbiórki</a>
+                        <a class="my_nav-link" href="/ministryMeetings?month=<%= language.__(months[new Date().getMonth()]) + " " + new Date().getFullYear() %>"><i class="fas fa-briefcase"></i> <br> <%= language.__("navText") %></a>
                     </li>
                 <% } %>
             
                 
                 <% if(header === "Audio-video | Congregation Planner"){ %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link my_active" href="/meetings/audioVideo?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-headphones"></i> <br> Audio-video</a>
+                        <a class="my_nav-link my_active" href="/meetings/audioVideo?month=<%= language.__(months[new Date().getMonth()]) + " " + new Date().getFullYear() %>"><i class="fa-solid fa-headphones"></i> <br> Audio-video</a>
                     </li>
                 <% } else { %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link" href="/meetings/audioVideo?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-headphones"></i> <br> Audio-video</a>
+                        <a class="my_nav-link" href="/meetings/audioVideo?month=<%= language.__(months[new Date().getMonth()]) + " " + new Date().getFullYear() %>"><i class="fa-solid fa-headphones"></i> <br> Audio-video</a>
                     </li>
                 <% } %>
 
-                <% if(header === "Porządkowi | Congregation Planner"){ %>
+                <% if(header === `${language.__("sectionText")}  | Congregation Planner`){ %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link my_active" href="/meetings/ordinals?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-shield"></i> <br> Porządkowi</a>
+                        <a class="my_nav-link my_active" href="/meetings/ordinals?month=<%= language.__(months[new Date().getMonth()]) + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-shield"></i> <br> <%= language.__("sectionText") %></a>
                     </li>
                 <% } else { %>
                     <li class="my_nav-item">
-                        <a class="my_nav-link" href="/meetings/ordinals?month=<%= months[new Date().getMonth()] + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-shield"></i> <br> Porządkowi</a>
+                        <a class="my_nav-link" href="/meetings/ordinals?month=<%= language.__(months[new Date().getMonth()]) + " " + new Date().getFullYear() %>"><i class="fa-solid fa-user-shield"></i> <br> <%= language.__("sectionText") %></a>
                     </li>
                 <% } %>
 
@@ -76,7 +76,7 @@
                 <% } %> -->
         
                 <li class="my_nav-item">
-                    <a class="my_nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> <br> Wyloguj</a>
+                    <a class="my_nav-link" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> <br> <%= language.__("logOutLabel") %></a>
                             
                 </li>
             </ul>

@@ -9,6 +9,7 @@ import methodOverride from "method-override";
 import { months, sendEmail } from "../helpers.js";
 import Activity from "../models/activity.js";
 import Territory from "../models/territory.js";
+import i18n from "i18n";
 
 dotenv.config();
 
@@ -25,21 +26,23 @@ let options = {
 let geocoder = node_geocoder(options);
 
 export const renderRegisterCongregationForm = (req, res, next) => {
+    i18n.setLocale(req.language);
     if(req.query.code === process.env.REGISTER_CODE){
         res.render("./congregations/new", {
-            header: "Rejestracja zboru | Congregation Planner",
+            header: `${i18n.__("registerHeading")} | Congregation Planner`,
             congregation: ''
         });
     } else {
-      res.send("Nie masz dostępu do tej strony")
+      res.send(i18n.__("noAccess"))
     }
 	
 }
 
 export const registerCongregation = (req, res, next) => {
+    i18n.setLocale(req.language);
     if(req.body.password !== req.body.confirm){
-        req.flash("error", "Hasła nie są te same");
-        res.render("./congregations/new", { error:  "Hasła nie są te same", congregation: req.body, header: "Rejestracja zboru | Congregation Planner"});
+        req.flash("error", i18n.__("passwordsNotTheSame"));
+        res.render("./congregations/new", { error:  i18n.__("passwordsNotTheSame"), congregation: req.body, header: `${i18n.__("registerHeading")} | Congregation Planner`});
     } else {
         geocoder.geocode(req.body.mainCity, function (err, data) {
             if (err || !data.length) {
@@ -69,10 +72,8 @@ export const registerCongregation = (req, res, next) => {
                     return res.render("./congregations/new", { error: err.message});
                 } 
                 passport.authenticate("local")(req, res, function() {
-                    const subject = 'Weryfikacja maila w Congregation Planner';
-                    const emailText = `Jesteś na ostatniej prostej do możliwości planowania różnych rzeczy w Congregation Planner. Wystarczy, że 
-                    Ty lub drugi admin potwierdzicie email poniższym 
-                    kodem weryfikacyjnym:`
+                    const subject = i18n.__("emailVerificationTitle");
+                    const emailText = i18n.__("emailVerificationMessage");
                     sendEmail(subject, congregation.territoryServantEmail, emailText, congregation)
                     sendEmail(subject, congregation.ministryOverseerEmail, emailText, congregation)
                     res.redirect(`/congregations/${congregation._id}/verification`);
@@ -83,6 +84,7 @@ export const registerCongregation = (req, res, next) => {
 }
 
 export const renderCongregationInfo = (req, res, next) => {
+    i18n.setLocale(req.language);
     Congregation
         .findById(req.params.congregation_id)
         .populate(["preacher", "territories"])
@@ -115,6 +117,7 @@ export const renderCongregationInfo = (req, res, next) => {
 }
 
 export const renderEditCongregationForm = (req, res, next) => {
+    i18n.setLocale(req.language);
     Congregation
         .findById(req.params.congregation_id)
         .exec()
@@ -129,6 +132,7 @@ export const renderEditCongregationForm = (req, res, next) => {
 }
 
 export const editCongregation = (req, res, next) => {
+    i18n.setLocale(req.language);
     Congregation
         .findByIdAndUpdate(req.params.congregation_id, req.body.congregation)
         .exec()
@@ -150,6 +154,7 @@ export const editCongregation = (req, res, next) => {
 }
 
 export const renderVerificationForm = (req, res, next) => {
+    i18n.setLocale(req.language);
     Congregation
         .findOne({
             $and: [
@@ -160,14 +165,14 @@ export const renderVerificationForm = (req, res, next) => {
         .exec()
         .then((congregation) => {
             if(congregation){
-                let header = "Weryfikacja konta | Congregation Planner"
+                let header = `${i18n.__("verificationHeading")} Congregation Planner`
                 res.render("./congregations/verification", {
                     header: header,
                     congregation: congregation
                 })
             } else {
-                req.flash("error", "Kod weryfikacyjny wygasł lub nie ma takiego konta. Kliknij przycisk Wyślij kod ponownie poniżej ")
-                let header = "Weryfikacja konta | Congregation Planner"
+                req.flash("error", i18n.__("expiredCode"));
+                let header = `${i18n.__("verificationHeading")} Congregation Planner`
                 res.render("./congregations/verification", {
                     header: header,
                     congregation_id: req.params.congregation_id
@@ -178,6 +183,7 @@ export const renderVerificationForm = (req, res, next) => {
 }
 
 export const verifyCongregation = (req, res, next) => {
+    i18n.setLocale(req.language);
     Congregation
         .findOne({
             $and: [
@@ -191,14 +197,14 @@ export const verifyCongregation = (req, res, next) => {
                 if(congregation.verificationNumber === +req.body.code){
                     congregation.verificated = true;
                     congregation.save();
-                    req.flash("success", `Witaj ${congregation.username}. Bardzo nam miło, że do nas dołączyłeś`)
+                    req.flash("success", `${i18n.__("welcome")} ${congregation.username}. ${i18n.__("niceToMeetYou")}`)
                     res.redirect("/login")
                 } else {
-                    req.flash("error", "Kod weryfikacyjny jest niepoprawny. Spróbuj ponownie")
+                    req.flash("error", i18n.__("wrongCode"))
                     res.redirect(`back`)
                 }
             } else {
-                req.flash("error", "Kod weryfikacyjny wygasł lub nie ma takiego konta. Kliknij przycisk Wyślij kod ponownie poniżej ")
+                req.flash("error", i18n.__("expiredCode"));
                 res.redirect("back")
             }
         })
@@ -206,6 +212,7 @@ export const verifyCongregation = (req, res, next) => {
 }
 
 export const resendVerificationCode = (req, res, next) => {
+    i18n.setLocale(req.language);
     Congregation
         .findById(req.params.congregation_id)
         .exec()
@@ -219,10 +226,8 @@ export const resendVerificationCode = (req, res, next) => {
             congregation.verificationNumber = verificationCode;
             congregation.verificationExpires = Date.now() + 360000;
             congregation.save()
-            const subject = 'Ponowne wysłanie kodu, by potwierdzić email';
-            const emailText = `Właśnie dostałem prośbę o ponowne wysłanie kodu do
-                weryfikacji emaila w Congregation Planner.
-                Jeśli to nie byłeś ty, zignoruj wiadomość.`;
+            const subject = i18n.__("resendEmailVerificationTitle");
+            const emailText = i18n.__("resendEmailVerificationMessage");
             sendEmail(subject, congregation.territoryServantEmail, emailText, congregation)
             sendEmail(subject, congregation.ministryOverseerEmail, emailText, congregation)
             res.redirect(`/congregations/${congregation._id}/verification`);
@@ -231,6 +236,7 @@ export const resendVerificationCode = (req, res, next) => {
 }
 
 export const renderTwoFactorForm = (req, res, next) => {
+    i18n.setLocale(req.language);
     Congregation
         .findOne({
             $and: [
@@ -241,15 +247,15 @@ export const renderTwoFactorForm = (req, res, next) => {
         .exec()
         .then((congregation) => {
             if(congregation){
-                let header = "Dwustopniowa weryfikacja | Congregation Planner"
+                let header = `${i18n.__("twoFactorHeaderText")} | Congregation Planner`
                 res.render("./congregations/two-factor", {
                     header: header,
                     congregation: congregation,
                     testUser: process.env.TEST_USER
                 })
             } else {
-                req.flash("error", "Kod weryfikacyjny wygasł lub nie ma takiego konta. Kliknij przycisk Wyślij kod ponownie poniżej ")
-                let header = "Dwustopniowa werfyikacja | Congregation Planner"
+                req.flash("error", i18n.__("expiredCode"));
+                let header = `${i18n.__("twoFactorHeaderText")} | Congregation Planner`
                 res.render("./congregations/two-factor", {
                     header: header,
                     congregation_id: req.params.congregation_id
@@ -260,6 +266,7 @@ export const renderTwoFactorForm = (req, res, next) => {
 }
 
 export const verifyTwoFactor = (req, res, next) => {
+    i18n.setLocale(req.language);
     Congregation
         .findOne({
             $and: [
@@ -272,9 +279,9 @@ export const verifyTwoFactor = (req, res, next) => {
         .then((congregation) => {
             if(congregation){
                 req.flash("success", `Pomyślnie zalogowałeś się do Congregation Planner`)
-                res.redirect(`/meetings?type=${new Date().getDay() === 0 || new Date().getDay() === 6 ? "Zebranie w weekend" : "Zebranie w tygodniu"}&month=${months[new Date().getMonth()] + " " + new Date().getFullYear()}`)
+                res.redirect(`/meetings?type=${new Date().getDay() === 0 || new Date().getDay() === 6 ? i18n.__("weekend") : i18n.__("midWeek")}&month=${i18n.__(months[new Date().getMonth()]) + " " + new Date().getFullYear()}`)
             } else {
-                req.flash("error", "Kod weryfikacyjny wygasł lub nie ma takiego konta. Kliknij przycisk Wyślij kod ponownie poniżej ")
+                req.flash("error", i18n.__("expiredCode"));
                 res.redirect("back")
             }
         })
@@ -282,6 +289,7 @@ export const verifyTwoFactor = (req, res, next) => {
 }
 
 export const resendTwoFactorCode = (req, res, next) => {
+    i18n.setLocale(req.language);
     Congregation
         .findById(req.params.congregation_id)
         .exec()
@@ -295,10 +303,8 @@ export const resendTwoFactorCode = (req, res, next) => {
             congregation.verificationNumber = verificationCode;
             congregation.verificationExpires = Date.now() + 360000;
             congregation.save()
-            const subject = 'Ponowne wysłanie kodu weryfikacyjnego';
-            let emailText = `Właśnie dostałem prośbę o ponowne wysłanie kodu do
-            dwustopniowej weryfikacji logowania do Congregation Planner.
-            Jeśli to nie byłeś ty, zignoruj wiadomość.`;
+            const subject = i18n.__("resendTwoFactorTitle");
+            const emailText = i18n.__("resendTwoFactorMessage");
             
             sendEmail(subject, congregation.territoryServantEmail, emailText, congregation)
             sendEmail(subject, congregation.ministryOverseerEmail, emailText, congregation)

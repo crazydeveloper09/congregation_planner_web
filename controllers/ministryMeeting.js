@@ -8,6 +8,7 @@ import pdf from 'html-pdf';
 import path from 'path';
 import { __dirname } from "../app.js";
 import { groupBy, months } from "../helpers.js";
+import i18n from "i18n";
 const app = express();
 
 app.use(flash());
@@ -15,6 +16,7 @@ app.use(methodOverride("_method"))
 
 export const generateListOfMinistryMeetings = (req, res, next) => {
     const congregationID = req.user.username ? req.user._id : req.user.congregation;
+    i18n.setLocale(req.language);
     MinistryMeeting
         .find({ $and: [
             {month: req.query.month},
@@ -26,12 +28,13 @@ export const generateListOfMinistryMeetings = (req, res, next) => {
         .then((ministryMeetings) => {
             let data = {
                 month: req.query.month,
-                ministryMeetings
+                ministryMeetings,
+                language: i18n
             };
             ejs.renderFile(path.join(__dirname, './views/ministryMeetings/generate-pdf.ejs'), data, {}, function(err, str) {
                 if (err) return res.send({...err, line: 28});
 
-                const title = `Zbiórki - ${req.query.month}`;
+                const title = `${i18n.__("ministryMeetingSectionText")} - ${req.query.month}`;
                 const DOWNLOAD_DIR = path.join(process.env.HOME || process.env.USERPROFILE, 'downloads/')
 
 
@@ -53,13 +56,14 @@ export const generateListOfMinistryMeetings = (req, res, next) => {
 
 export const getListOfMinistryMeetings = (req, res, next) => {
     const congregationID = req.user.username ? req.user._id : req.user.congregation;
+    i18n.setLocale(req.language);
     MinistryMeeting
         .find({congregation: congregationID})
         .populate("lead")
         .exec()
         .then((ministryMeetings) => {
             res.render("./ministryMeetings/index", {
-                header: 'Zbiórki | Congregation Planner',
+                header: `${i18n.__("ministryMeetingSectionText")} | Congregation Planner`,
                 ministryMeetings,
                 groupBy,
                 month: req.query.month,

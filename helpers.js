@@ -1,11 +1,13 @@
 import mailgun from 'mailgun-js';
 import Checkout from './models/checkout.js';
+import i18n from 'i18n';
 
 export const isLoggedIn = (req, res, next)  => {
+    i18n.setLocale(req.language)
     if(req.isAuthenticated()) {
         return next();
     }
-    req.flash("error", "Prosimy zaloguj się najpierw");
+    req.flash("error", i18n.__("logInFirst"));
     res.redirect("/login");
 }
 
@@ -18,18 +20,18 @@ export const countDaysFromNow = (date) => {
 }
 
 export const months = [
-    'Styczeń', 
-    'Luty', 
-    'Marzec', 
-    'Kwiecień', 
-    'Maj', 
-    'Czerwiec', 
-    'Lipiec', 
-    'Sierpień', 
-    'Wrzesień', 
-    'Październik', 
-    'Listopad', 
-    'Grudzień'
+    'january', 
+    'february', 
+    'march', 
+    'april', 
+    'may', 
+    'june', 
+    'july', 
+    'august', 
+    'september', 
+    'october', 
+    'november', 
+    'december'
 ];
 
 export const sendEmail = async (subject, to, text, congregation) => {
@@ -39,6 +41,11 @@ export const sendEmail = async (subject, to, text, congregation) => {
         text: text,
         username: congregation.username,
         verificationCode: congregation.verificationNumber,
+        appName: 'Congregation Planner',
+        headerColor: '#1f8aad',
+        mailWelcome: i18n.__("mailWelcome"),
+        mailGreetings: i18n.__("mailGreetings"),
+        automaticMessageInfo: i18n.__("automaticMessageInfo"),
     })
     const data = {
         from: `Weryfikacja konta Congregation Planner <admin@websiteswithpassion.pl>`,
@@ -83,27 +90,32 @@ export const groupBy = function(data, key) {
     let fontColor;
     let iconName;
   switch (type) {
-    case "Studium Strażnicy": {
+    case "Studium Strażnicy":
+    case "Watchtower Study": {
       fontColor = "#588D3F";
       iconName = 'fa-solid fa-book-open' ;
       break;
     }
-    case "Wykład biblijny": {
+    case "Wykład biblijny":
+    case "Bible Talk": {
       fontColor = "#292929";
       iconName = 'fa-solid fa-book-bookmark';
       break;
     }
-    case "Skarby ze Słowa Bożego": {
+    case "Skarby ze Słowa Bożego":
+    case "Treasures From God's Word": {
       fontColor = "#2A6B77";
       iconName = 'fa-regular fa-gem';
       break;
     }
-    case "Ulepszajmy swoją służbę": {
+    case "Ulepszajmy swoją służbę":
+    case "Apply Yourself To The Field Ministry": {
       fontColor = "#9B6D17";
       iconName = 'fa-solid fa-briefcase';
       break;
     }
-    case "Chrześcijański tryb życia": {
+    case "Chrześcijański tryb życia":
+    case "Living As Christians": {
       fontColor = "#942926";
       iconName = 'fa-regular fa-circle-up';
       break;

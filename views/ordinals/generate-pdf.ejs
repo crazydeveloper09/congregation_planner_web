@@ -36,27 +36,27 @@
     <div class="container">
         <div class="row" style="margin-top: 5%;">
             <div class="col-lg-12">
-                <h1 class="text-center" style="font-weight: 700;">Porządkowi - <%= month %></h1>
+                <h1 class="text-center" style="font-weight: 700;"><%= language.__("sectionText") %> - <%= month %></h1>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Data</th>
-                                <th>Porządkowy 1</th>
-                                <th>Porządkowy 2</th>
-                                <th>Audytorium</th>
-                                <th>Parking</th>
+                                <th><%= language.__("dateLabel") %></th>
+                                <th><%= language.__("hallwayLabel") %></th>
+                                <th><%= language.__("hallway2Label") %></th>
+                                <th><%= language.__("auditoriumLabel") %></th>
+                                <th><%= language.__("parkingLabel") %></th>
                             </tr>
                             
                         </thead>
                         <tbody>
-                            <% meetings.forEach((meeting) => { %>
+                            <% groupBy(meetings, 'month')[month].forEach((meeting) => { %>
                                 <tr class="text-center">
                                     <td><%= new Date(meeting.date).toLocaleDateString('pl-PL') %></td>
                                     <td><%= meeting.ordinal?.hallway1?.name %></td>
-                                    <td><%= meeting.ordinal?.hallway2?.name || "Nie przydzielono" %></td>
+                                    <td><%= meeting.ordinal?.hallway2?.name || language.__("noAssignmentText") %></td>
                                     <td><%= meeting.ordinal?.auditorium?.name %></td>
-                                    <td><%= meeting.ordinal?.parking?.name || "Nie przydzielono" %></td>
+                                    <td><%= meeting.ordinal?.parking?.name || language.__("noAssignmentText") %></td>
                                 </tr>
                                 
                             

@@ -5,7 +5,7 @@
                 <div class="text-center">
                     <img src="/logo_cong_website.png" alt="logo">
                 </div>
-                <h1 class="login">Dwustopniowa weryfikacja w Congregation Planner</h1>
+                <h1 class="login"><%= language.__("twoFactorHeading") %></h1>
                 <% if(error.length > 0){ %>
                     <div class="alert alert-danger" role="alert">
                         <%= error %>
@@ -20,29 +20,29 @@
         
                 <% if(typeof congregation !== 'undefined'){ %>
                     <% if(congregation.username === testUser){ %>
-                       <p>
-                         Twój kod to: <%= congregation.verificationNumber %>
-                      </p>
-                      
-                     <% } %>
+                        <p>
+                            <%= language.__("yourCode") %>: <%= congregation.verificationNumber %>
+                        </p>
+                    
+                    <% } %>
                     <form action="/congregations/<%= congregation._id %>/two-factor" method="post" id="form4">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" name="code" id="code" placeholder="123523" aria-label="Kod weryfikacyjny" aria-describedby="basic-addon1" required>
                             <label for="code" class="username">
-                                Kod weryfikacyjny
+                                <%= language.__("codeLabel") %>
                                 
                             </label>
                             
                         </div>  
-                        <input type="submit" value="Zweryfikuj konto" class="btn button btn-green" id="send">
+                        <input type="submit" value="<%= language.__("twoFactorButtonText") %>" class="btn button btn-green" id="send">
                        
                     </form>
                     <form action="/congregations/<%= congregation._id %>/resend/two-factor" method="post">
-                        <input type="submit" value="Wyślij kod ponownie" class="btn button btn-golden">
+                        <input type="submit" value="<%= language.__("resetText") %>" class="btn button btn-golden">
                     </form>
                 <% } else { %>
                     <form action="/congregations/<%= congregation_id %>/resend/two-factor" method="post">
-                        <input type="submit" value="Wyślij kod ponownie" class="btn button btn-golden">
+                        <input type="submit" value="<%= language.__("resetText") %>" class="btn button btn-golden">
                     </form>
                 <% } %>
                 
@@ -55,7 +55,7 @@
 <script>
     document.getElementById("form4").addEventListener("submit", () => {
         document.getElementById("send").setAttribute("disabled", "disabled");
-        document.getElementById("send").value = "Weryfikowanie...";
+        document.getElementById("send").value = `<%= language.__("verifyAction") %>`;
     })
 </script>
 </body>

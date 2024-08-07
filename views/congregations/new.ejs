@@ -5,14 +5,8 @@
                                 <img src="/logo_cong_website.png" alt="logo">
                             </div>
                             <div id="form1">
-                                <div class="text-center">
-                                    <a href="/territories/available">
-                                        <i class="fas fa-arrow-left"></i>
-                                        Wróć do strony głównej
-                                    </a>
-                                </div>
                                 
-                                <h1 class="login">Rejestracja zboru</h1>
+                                <h1 class="login"><%= language.__("registerHeading") %></h1>
                                 <% if(error.length > 0){ %>
                                     <div class="alert alert-danger" role="alert">
                                         <%= error %>
@@ -29,7 +23,7 @@
                        
                                             <input type="text" class="form-control" autocomplete="off" value="<%= congregation?.username %>" name="username" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
                                             <label for="username" class="username">
-                                                Nazwa zboru
+                                                <%= language.__("usernameLabel") %>
                                                 
                                             </label>
                                             
@@ -38,7 +32,7 @@
                        
                                             <input type="email" class="form-control" autocomplete="off" value="<%= congregation?.territoryServantEmail %>" name="territoryServantEmail" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
                                             <label for="username" class="username">
-                                                Email admina
+                                                <%= language.__("adminLabel") %>
                                                 
                                             </label>
                                             
@@ -48,7 +42,7 @@
                        
                                             <input type="email" class="form-control" autocomplete="off" value="<%= congregation?.ministryOverseerEmail %>" name="ministryOverseerEmail" id="username" placeholder="h" aria-label="Hasło" aria-describedby="basic-addon1">
                                             <label for="username" class="username">
-                                                Email drugiego admina
+                                                <%= language.__("secondAdminLabel") %>
                                                 
                                             </label>
                                             
@@ -58,7 +52,7 @@
                        
                                             <input type="text" name="mainCity" id="mainCity" autocomplete="off" placeholder="mainCity" class="form-control" required>
                                             <label for="mainCity" class="username" id="mainCityLabel">
-                                               Główne miasto zboru 
+                                                <%= language.__("mainCityLabel") %>
                                                 
                                             </label>
                                             
@@ -68,7 +62,7 @@
                            
                                             <input type="password" class="form-control" autocomplete="off" value="<%= congregation?.password %>" name="password" id="password" placeholder="1234" aria-label="Hasło" aria-describedby="basic-addon1">
                                             <label for="password" class="username">
-                                                Hasło
+                                                <%= language.__("passwordLabel") %>
                                                 
                                             </label>
                                             
@@ -77,7 +71,7 @@
                            
                                             <input type="password" class="form-control" autocomplete="off" value="<%= congregation?.confirm %>" name="confirm" id="confirm" placeholder="1234" aria-label="Hasło" aria-describedby="basic-addon1">
                                             <label for="confirm" class="username">
-                                                Powtórz hasło
+                                                <%= language.__("repeatPasswordLabel") %>
                                                 
                                             </label>
                                             
@@ -85,13 +79,13 @@
                                         <div class="form-group form-check">
                                             <input type="checkbox" class="form-check-input" id="exampleCheck1" required>
                                             <label class="form-check-label" for="exampleCheck1">
-                                                Przeczytałem i zapoznałem się z
-                                                <a href="/policy">polityką prywatności</a>
+                                                <%= language.__("privacyPolicyCheckbox") %>
+                                                <a href="/policy"><%= language.__("privacyPolicyLink") %></a>
                                                
                                             </label>
                                         </div>
                                     
-                                    <input type="submit" value="Zarejestruj zbór" class="btn btn-primary button btn-green" id="send">
+                                    <input type="submit" value="<%= language.__("registerButtonText") %>" class="btn btn-primary button btn-green" id="send">
                                    
                                 </form>
                                 
@@ -108,7 +102,7 @@
         <script>
             document.getElementById("form4").addEventListener("submit", function(){
                 document.getElementById("send").setAttribute("disabled", "disabled");
-                document.getElementById("send").innerText = `Rejestrowanie...`;
+                document.getElementById("send").innerText = `<%= language.__("registerAction") %>`;
             })
         </script>    
     </body>
